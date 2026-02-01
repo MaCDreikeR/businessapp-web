@@ -46,6 +46,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   const [servicos, setServicos] = useState<Servico[]>([]);
   const [pacotes, setPacotes] = useState<Pacote[]>([]);
   const [profissionais, setProfissionais] = useState<Profissional[]>([]);
+  const [antecedenciaMinima, setAntecedenciaMinima] = useState<number>(2); // padrão 2 horas
 
   // Estados de envio
   const [submitting, setSubmitting] = useState(false);
@@ -70,6 +71,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   useEffect(() => {
     loadServicosEPacotes();
     loadProfissionais();
+    loadAntecedenciaMinima();
   }, [estabelecimento.id]);
 
   async function loadServicosEPacotes() {
@@ -97,6 +99,22 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
     console.log('🔍 Profissionais carregados:', data);
     setProfissionais(data || []);
+  }
+
+  async function loadAntecedenciaMinima() {
+    const { data } = await supabase
+      .from('configuracoes')
+      .select('valor')
+      .eq('estabelecimento_id', estabelecimento.id)
+      .eq('chave', 'agendamento_online_antecedencia_horas')
+      .single();
+
+    if (data?.valor) {
+      const horas = parseInt(data.valor, 10);
+      if (!isNaN(horas) && horas >= 0) {
+        setAntecedenciaMinima(horas);
+      }
+    }
   }
 
   // Calcular duração total dos itens selecionados
@@ -301,6 +319,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
             horarioAbertura={horarioAbertura}
             horarioFechamento={horarioFechamento}
             intervaloAgendamento={intervaloAgendamento}
+            antecedenciaMinima={antecedenciaMinima}
           />
         )}
 

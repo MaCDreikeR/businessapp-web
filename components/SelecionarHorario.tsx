@@ -15,6 +15,7 @@ interface Props {
   horarioAbertura?: string;
   horarioFechamento?: string;
   intervaloAgendamento?: number;
+  antecedenciaMinima?: number; // Em horas
 }
 
 export default function SelecionarHorario({
@@ -29,6 +30,7 @@ export default function SelecionarHorario({
   horarioAbertura = '08:00',
   horarioFechamento = '18:00',
   intervaloAgendamento = 30,
+  antecedenciaMinima = 2,
 }: Props) {
   const [horarios, setHorarios] = useState<string[]>([]);
   const [horariosOcupados, setHorariosOcupados] = useState<Set<string>>(new Set());
@@ -97,10 +99,14 @@ export default function SelecionarHorario({
     const isHoje = dataSelecionada.toDateString() === agora.toDateString();
     const horaAtual = agora.getHours() * 60 + agora.getMinutes();
     
+    // Calcular o horário mínimo permitido (hora atual + antecedência em minutos)
+    const antecedenciaMinutos = antecedenciaMinima * 60;
+    const horarioMinimoPermitido = horaAtual + antecedenciaMinutos;
+    
     // Gerar horários com o intervalo configurado
     for (let minutos = totalMinutosInicio; minutos < totalMinutosFim; minutos += intervaloAgendamento) {
-      // Se for hoje, só adiciona horários futuros
-      if (isHoje && minutos <= horaAtual) {
+      // Se for hoje, só adiciona horários futuros (considerando antecedência mínima)
+      if (isHoje && minutos < horarioMinimoPermitido) {
         continue;
       }
       
