@@ -91,10 +91,11 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   async function loadProfissionais() {
     const { data } = await supabase
       .from('usuarios')
-      .select('*')
+      .select('id, nome_completo, avatar_url, email, faz_atendimento, estabelecimento_id')
       .eq('estabelecimento_id', estabelecimento.id)
-      .eq('faz_atendimento', true);
+      .eq('faz_atendimento', 'true');
 
+    console.log('🔍 Profissionais carregados:', data);
     setProfissionais(data || []);
   }
 
