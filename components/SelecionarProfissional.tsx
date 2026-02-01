@@ -39,16 +39,16 @@ export default function SelecionarProfissional({
               {prof.avatar_url ? (
                 <img
                   src={prof.avatar_url}
-                  alt={prof.nome}
+                  alt={prof.nome_completo}
                   className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover"
                 />
               ) : (
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-lg sm:text-xl">
-                  {prof.nome?.[0] || '?'}
+                  {prof.nome_completo?.[0] || '?'}
                 </div>
               )}
               <div>
-                <h4 className="font-semibold text-base sm:text-lg text-gray-900">{prof.nome}</h4>
+                <h4 className="font-semibold text-base sm:text-lg text-gray-900">{prof.nome_completo}</h4>
               </div>
             </div>
           </button>

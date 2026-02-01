@@ -25,11 +25,10 @@ export interface AgendamentoOnlineConfig {
 export interface Profissional {
   id: string;
   estabelecimento_id: string;
-  nome: string;
+  nome_completo: string;
   avatar_url?: string;
-  especialidade?: string;
-  ativo: boolean;
-  ordem: number;
+  email?: string;
+  faz_atendimento?: boolean;
   created_at: string;
   updated_at: string;
 }
