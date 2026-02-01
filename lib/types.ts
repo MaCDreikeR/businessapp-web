@@ -26,7 +26,7 @@ export interface Profissional {
   id: string;
   estabelecimento_id: string;
   nome: string;
-  foto_url?: string;
+  avatar_url?: string;
   especialidade?: string;
   ativo: boolean;
   ordem: number;

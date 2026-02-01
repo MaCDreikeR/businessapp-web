@@ -36,9 +36,9 @@ export default function SelecionarProfissional({
             }`}
           >
             <div className="flex items-center gap-4">
-              {prof.foto_url ? (
+              {prof.avatar_url ? (
                 <img
-                  src={prof.foto_url}
+                  src={prof.avatar_url}
                   alt={prof.nome}
                   className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover"
                 />
