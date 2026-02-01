@@ -109,8 +109,9 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
       .eq('chave', 'agendamento_online_antecedencia_horas')
       .single();
 
-    if (data?.valor) {
-      const horas = parseInt(data.valor, 10);
+    const config = data as any;
+    if (config?.valor) {
+      const horas = parseInt(config.valor, 10);
       if (!isNaN(horas) && horas >= 0) {
         setAntecedenciaMinima(horas);
       }
