@@ -49,11 +49,8 @@ export default function SelecionarProfissional({
               )}
               <div className="flex-1">
                 <h4 className="font-semibold text-base sm:text-lg text-gray-900">
-                  {prof.nome_completo || prof.email || 'Nome não disponível'}
+                  {prof.nome_completo || 'Profissional'}
                 </h4>
-                {prof.email && prof.nome_completo && (
-                  <p className="text-sm text-gray-500">{prof.email}</p>
-                )}
               </div>
             </div>
           </button>
