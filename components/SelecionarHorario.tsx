@@ -57,7 +57,7 @@ export default function SelecionarHorario({
 
     if (agendamentos && agendamentos.length > 0) {
       // Para cada agendamento, marcar todos os horários entre início e fim como ocupados
-      agendamentos.forEach(agendamento => {
+      agendamentos.forEach((agendamento: any) => {
         const inicio = new Date(agendamento.data_hora);
         const [horaFim, minFim] = agendamento.horario_termino.split(':').map(Number);
         const fim = new Date(data);

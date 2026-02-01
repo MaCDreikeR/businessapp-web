@@ -3,9 +3,8 @@ import { supabase } from '@/lib/supabase';
 import type { CriarAgendamentoOnlineDTO } from '@/lib/types';
 
 export async function POST(request: Request) {
-  let body: CriarAgendamentoOnlineDTO | null = null;
   try {
-    body = await request.json();
+    const body: CriarAgendamentoOnlineDTO = await request.json();
     
     console.log('📝 Dados recebidos:', JSON.stringify(body, null, 2));
 
@@ -41,14 +40,16 @@ export async function POST(request: Request) {
       );
     }
 
-    if (estabelecimento.status !== 'ativa') {
+    const estab = estabelecimento as { id: string; status: string };
+
+    if (estab.status !== 'ativa') {
       return NextResponse.json(
         { error: 'Estabelecimento inativo' },
         { status: 403 }
       );
     }
 
-    const estabelecimentoId = estabelecimento.id;
+    const estabelecimentoId = estab.id;
 
     // Verificar se agendamento online está ativo
     const { data: config } = await supabase
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
       .eq('estabelecimento_id', estabelecimentoId)
       .single();
 
-    if (!config?.ativo) {
+    if (!(config as { ativo: boolean } | null)?.ativo) {
       return NextResponse.json(
         { error: 'Agendamento online desativado' },
         { status: 403 }
@@ -68,8 +69,8 @@ export async function POST(request: Request) {
     const servicosIds = body.servicos_ids || [];
     const pacotesIds = body.pacotes_ids || [];
     
-    let servicosDetalhes = [];
-    let pacotesDetalhes = [];
+    let servicosDetalhes: any[] = [];
+    let pacotesDetalhes: any[] = [];
     let duracaoTotal = 0;
 
     // Buscar detalhes dos serviços
@@ -88,7 +89,7 @@ export async function POST(request: Request) {
       }
       
       servicosDetalhes = servicos;
-      duracaoTotal += servicos.reduce((sum, s) => sum + s.duracao, 0);
+      duracaoTotal += servicos.reduce((sum: number, s: any) => sum + s.duracao, 0);
     }
 
     // Buscar detalhes dos pacotes
@@ -107,7 +108,7 @@ export async function POST(request: Request) {
       }
 
       pacotesDetalhes = pacotes;
-      duracaoTotal += pacotes.reduce((sum, p) => sum + (p.duracao_total || 0), 0);
+      duracaoTotal += pacotes.reduce((sum: number, p: any) => sum + (p.duracao_total || 0), 0);
     }
 
     // Calcular horário de término
@@ -132,8 +133,9 @@ export async function POST(request: Request) {
     if (conflitos && conflitos.length > 0) {
       // Verificar sobreposição de horários
       for (const agendamento of conflitos) {
-        const agendamentoInicio = new Date(agendamento.data_hora).getTime();
-        const agendamentoFim = new Date(`${body.data}T${agendamento.horario_termino}`).getTime();
+        const ag = agendamento as any;
+        const agendamentoInicio = new Date(ag.data_hora).getTime();
+        const agendamentoFim = new Date(`${body.data}T${ag.horario_termino}`).getTime();
         const novoInicio = new Date(dataHoraInicio).getTime();
         const novoFim = new Date(dataHoraFim).getTime();
 
@@ -144,8 +146,8 @@ export async function POST(request: Request) {
             { 
               error: 'Horário já está ocupado ou sobrepõe outro agendamento',
               conflito: {
-                inicio: agendamento.data_hora,
-                termino: agendamento.horario_termino
+                inicio: ag.data_hora,
+                termino: ag.horario_termino
               }
             },
             { status: 409 }
@@ -168,16 +170,17 @@ export async function POST(request: Request) {
       .eq('estabelecimento_id', estabelecimentoId);
 
     // Encontrar cliente comparando apenas números do telefone
-    const clienteExistente = todosClientes?.find(cliente => {
+    const clienteExistente = todosClientes?.find((cliente: any) => {
       const telefoneLimpo = cliente.telefone?.replace(/\D/g, '') || '';
       return telefoneLimpo === telefoneNumeros;
     });
 
     if (clienteExistente) {
       // Cliente cadastrado - usar dados dele
-      console.log('✅ Cliente cadastrado encontrado:', clienteExistente.nome, '(telefone:', clienteExistente.telefone, ')');
-      clienteId = clienteExistente.id;
-      nomeCliente = clienteExistente.nome; // Usar o nome cadastrado no sistema
+      const cliente = clienteExistente as any;
+      console.log('✅ Cliente cadastrado encontrado:', cliente.nome, '(telefone:', cliente.telefone, ')');
+      clienteId = cliente.id;
+      nomeCliente = cliente.nome; // Usar o nome cadastrado no sistema
     } else {
       // Não é cliente cadastrado - agendamento sem vínculo
       console.log('➕ Agendamento para pessoa não cadastrada:', body.nome);
@@ -223,14 +226,14 @@ export async function POST(request: Request) {
         cliente: nomeCliente,
         telefone: telefoneNumeros,
         usuario_id: body.profissional_id, // profissional que vai atender
-        data_hora: dataHora,
+        data_hora: dataHoraInicio,
         horario_termino: horarioTermino,
         servicos: todosItens,
         valor_total: valorTotal,
         status: 'agendado',
         observacoes: body.observacao || null,
         criar_comanda_automatica: true, // Agendamento online cria comanda automaticamente
-      })
+      } as any)
       .select('id')
       .single();
 
@@ -242,11 +245,12 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log('✅ Agendamento criado com sucesso:', agendamento.id);
+    const ag = agendamento as any;
+    console.log('✅ Agendamento criado com sucesso:', ag.id);
 
     return NextResponse.json({
       success: true,
-      agendamento_id: agendamento.id,
+      agendamento_id: ag.id,
       message: 'Agendamento criado com sucesso!',
       horario_inicio: body.hora,
       horario_fim: horaFim,
@@ -257,9 +261,6 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('❌ Erro ao processar agendamento:', error);
     console.error('Stack:', error.stack);
-    if (body) {
-      console.error('Body recebido:', JSON.stringify(body));
-    }
     return NextResponse.json(
       { error: error.message || 'Erro interno do servidor', details: error.toString() },
       { status: 500 }

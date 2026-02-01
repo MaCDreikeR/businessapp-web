@@ -27,8 +27,8 @@ async function getEstabelecimento(slug: string): Promise<Estabelecimento | null>
     return null;
   }
   
-  console.log('✅ Estabelecimento encontrado:', data.nome);
-  return data;
+  console.log('✅ Estabelecimento encontrado:', (data as Estabelecimento).nome);
+  return data as Estabelecimento;
 }
 
 async function getConfig(estabelecimentoId: string): Promise<AgendamentoOnlineConfig | null> {
@@ -39,7 +39,7 @@ async function getConfig(estabelecimentoId: string): Promise<AgendamentoOnlineCo
     .single();
 
   if (error || !data) return null;
-  return data;
+  return data as AgendamentoOnlineConfig;
 }
 
 async function getConfiguracoes(estabelecimentoId: string) {
@@ -49,7 +49,7 @@ async function getConfiguracoes(estabelecimentoId: string) {
     .eq('estabelecimento_id', estabelecimentoId);
 
   const configs: Record<string, string> = {};
-  data?.forEach(config => {
+  data?.forEach((config: { chave: string; valor: string }) => {
     configs[config.chave] = config.valor;
   });
 
