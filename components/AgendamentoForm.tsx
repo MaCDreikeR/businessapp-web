@@ -256,8 +256,8 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
   return (
     <>
-      {/* Resumo Desktop - lateral direita */}
-      <div className="hidden xl:block fixed right-8 top-24 w-[300px]">
+      {/* Resumo Desktop - lateral direita ao lado do formulário */}
+      <div className="hidden xl:block fixed left-1/2 top-6 ml-[280px] w-[320px] z-10">
         <BookingSummaryDesktop
           servicos={[...servicosSelecionados, ...pacotesSelecionados]}
           profissional={profissionalSelecionado || null}
@@ -270,27 +270,27 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
       {/* Formulário principal */}
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             {/* Header com Glassmorphism */}
-            <div className="glass-effect px-5 py-4 sm:px-8 sm:py-6 text-white relative">
-              <div className="flex items-center gap-4">
+            <div className="glass-effect px-4 py-3 text-white relative">
+              <div className="flex items-center gap-3">
                 {estabelecimento.logo_url && (
                   <img
                     src={estabelecimento.logo_url}
                     alt={estabelecimento.nome}
-                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white p-1 object-contain shadow-lg"
+                    className="w-12 h-12 rounded-full bg-white p-1 object-contain shadow-lg"
                   />
                 )}
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-bold drop-shadow-md">{estabelecimento.nome}</h1>
-                  <p className="text-sm sm:text-base text-blue-100">Agendamento online</p>
+                  <h1 className="text-3xl sm:text-4xl font-bold drop-shadow-md">{estabelecimento.nome}</h1>
+                  <p className="text-xl text-blue-100">Agendamento online</p>
                 </div>
               </div>
             </div>
 
             {/* Progress Bar - Sticky no mobile */}
-            <div className="sticky top-0 md:relative z-30 px-5 py-3 sm:px-8 sm:py-4 bg-white border-b shadow-md md:shadow-none">
+            <div className="sticky top-0 md:relative z-30 px-4 py-2.5 bg-white border-b shadow-md md:shadow-none">
               {/* Resumo visual - só mobile e a partir da etapa 2 */}
               {currentStepNumber >= 2 && todosItensSelecionados.length > 0 && (
-                <div className="md:hidden mb-2 pb-2 border-b border-gray-200 space-y-1 text-sm">
+                <div className="md:hidden mb-2 pb-2 border-b border-gray-200 space-y-1 text-xs">
             {/* Data e Horário */}
             {data && (
               <div className="flex items-start gap-2">
@@ -375,9 +375,9 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
       </div>
 
       {/* Form Content */}
-      <div className="p-5 sm:p-8">
+      <div className="p-4">
         {error && (
-          <div className="mb-5 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-base">
+          <div className="mb-4 bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded-lg text-sm">
             {error}
           </div>
         )}
