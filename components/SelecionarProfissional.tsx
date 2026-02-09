@@ -31,16 +31,18 @@ export default function SelecionarProfissional({
         {loading ? (
           <SkeletonList count={3} type="profissional" />
         ) : (
-          profissionais.map((prof) => (
-            <button
-              key={prof.id}
-              onClick={() => onChange(prof.id)}
-              className={`p-4 rounded-lg border-2 transition-all text-left ${
-                profissionalId === prof.id
-                  ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-600 ring-offset-2'
-                  : 'border-gray-300 hover:border-blue-400 bg-white hover:shadow-md'
-              }`}
-            >
+          profissionais.map((prof, index) => {
+            const delayClass = `delay-${Math.min(index * 100, 500)}`;
+            return (
+              <button
+                key={prof.id}
+                onClick={() => onChange(prof.id)}
+                className={`p-4 rounded-lg border-2 transition-all text-left hover-lift animate-fade-in-up ${delayClass} ${
+                  profissionalId === prof.id
+                    ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-600 ring-offset-2'
+                    : 'border-gray-300 hover:border-blue-400 bg-white'
+                }`}
+              >
               <div className="flex items-center gap-4">
                 {prof.avatar_url ? (
                   <img
@@ -68,7 +70,8 @@ export default function SelecionarProfissional({
                 </div>
               </div>
             </button>
-          ))
+            );
+          })
         )}
       </div>
 

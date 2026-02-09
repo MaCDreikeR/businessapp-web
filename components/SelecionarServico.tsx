@@ -142,16 +142,17 @@ export default function SelecionarServico({
             {loading ? (
               <SkeletonList count={4} type="servico" />
             ) : servicosFiltrados.length > 0 ? (
-              servicosFiltrados.map((servico) => {
+              servicosFiltrados.map((servico, index) => {
                 const selecionado = servicosIds.includes(servico.id);
+                const delayClass = `delay-${Math.min(index * 75, 500)}`;
                 return (
                   <button
                     key={servico.id}
                     onClick={() => toggleServico(servico.id)}
-                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 ${
+                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 hover-lift animate-fade-in-up ${delayClass} ${
                       selecionado
                         ? 'bg-blue-50 border-l-4 border-blue-600 shadow-sm'
-                        : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm hover:shadow'
+                        : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm'
                     }`}
                   >
                     <div className="flex items-start gap-4">
@@ -234,16 +235,17 @@ export default function SelecionarServico({
           {/* Lista de Pacotes */}
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {pacotesFiltrados.length > 0 ? (
-              pacotesFiltrados.map((pacote) => {
+              pacotesFiltrados.map((pacote, index) => {
                 const selecionado = pacotesIds.includes(pacote.id);
+                const delayClass = `delay-${Math.min(index * 75, 500)}`;
                 return (
                   <button
                     key={pacote.id}
                     onClick={() => togglePacote(pacote.id)}
-                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 ${
+                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 hover-lift animate-fade-in-up ${delayClass} ${
                       selecionado
                         ? 'bg-purple-50 border-l-4 border-purple-600 shadow-sm'
-                        : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm hover:shadow'
+                        : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm'
                     }`}
                   >
                     <div className="flex items-start gap-4">
