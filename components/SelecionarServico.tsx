@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import type { Servico, Pacote } from '@/lib/types';
+import { SkeletonList } from './SkeletonLoader';
 
 interface Props {
   servicos: Servico[];
@@ -12,6 +13,7 @@ interface Props {
   onChangePacotes: (ids: string[]) => void;
   onNext: () => void;
   onBack?: () => void;
+  loading?: boolean;
 }
 
 export default function SelecionarServico({
@@ -23,6 +25,7 @@ export default function SelecionarServico({
   onChangePacotes,
   onNext,
   onBack,
+  loading = false,
 }: Props) {
   const [activeTab, setActiveTab] = useState<'servicos' | 'pacotes'>('servicos');
   const [buscaServicos, setBuscaServicos] = useState('');
@@ -135,7 +138,9 @@ export default function SelecionarServico({
 
           {/* Lista de Serviços */}
           <div className="space-y-3 max-h-96 overflow-y-auto">
-            {servicosFiltrados.length > 0 ? (
+            {loading ? (
+              <SkeletonList count={4} type="servico" />
+            ) : servicosFiltrados.length > 0 ? (
               servicosFiltrados.map((servico) => {
                 const selecionado = servicosIds.includes(servico.id);
                 return (

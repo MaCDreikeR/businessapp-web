@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { SkeletonHorarios } from './SkeletonLoader';
+import { SpinnerOverlay } from './Spinner';
 
 interface Props {
   data: string;
@@ -146,14 +148,20 @@ export default function SelecionarHorario({
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="space-y-5 animate-fade-in">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Escolha o Horário</h2>
+          <p className="text-base sm:text-lg text-gray-600 mt-2">
+            {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </p>
+        </div>
+        <SpinnerOverlay message="Buscando horários disponíveis..." />
       </div>
     );
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 animate-fade-in">
       <div>
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Escolha o Horário</h2>
         <p className="text-base sm:text-lg text-gray-600 mt-2">Selecione o melhor horário</p>

@@ -98,7 +98,7 @@ export default function SelecionarData({
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 animate-fade-in">
       <div>
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Escolha a Data</h2>
         <p className="text-base sm:text-lg text-gray-600 mt-2">Selecione o dia desejado</p>

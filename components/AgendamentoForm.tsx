@@ -47,6 +47,10 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   const [pacotes, setPacotes] = useState<Pacote[]>([]);
   const [profissionais, setProfissionais] = useState<Profissional[]>([]);
   const [antecedenciaMinima, setAntecedenciaMinima] = useState<number>(2); // padrão 2 horas
+  
+  // Estados de loading
+  const [loadingServicos, setLoadingServicos] = useState(true);
+  const [loadingProfissionais, setLoadingProfissionais] = useState(true);
 
   // Estados de envio
   const [submitting, setSubmitting] = useState(false);
@@ -75,6 +79,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   }, [estabelecimento.id]);
 
   async function loadServicosEPacotes() {
+    setLoadingServicos(true);
     const [{ data: servicosData }, { data: pacotesData }] = await Promise.all([
       supabase
         .from('servicos')
@@ -88,9 +93,11 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
     setServicos(servicosData || []);
     setPacotes(pacotesData || []);
+    setLoadingServicos(false);
   }
 
   async function loadProfissionais() {
+    setLoadingProfissionais(true);
     const { data } = await supabase
       .from('usuarios')
       .select('id, nome_completo, avatar_url, email, faz_atendimento, estabelecimento_id')
@@ -99,6 +106,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
     console.log('🔍 Profissionais carregados:', data);
     setProfissionais(data || []);
+    setLoadingProfissionais(false);
   }
 
   async function loadAntecedenciaMinima() {
@@ -246,24 +254,50 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
       {/* Progress Steps */}
       <div className="px-5 py-4 sm:px-8 sm:py-5 bg-gray-50 border-b">
-        <div className="flex items-center justify-between">
-          {['servico', 'profissional', 'data', 'horario', 'dados'].map((s, i) => (
-            <div key={s} className="flex items-center">
-              <div
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold ${
-                  step === s
-                    ? 'bg-blue-600 text-white'
-                    : ['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) >
-                      ['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(s)
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-300 text-gray-600'
-                }`}
-              >
-                {i + 1}
+        <div className="flex items-center justify-between mb-3">
+          {['servico', 'profissional', 'data', 'horario', 'dados'].map((s, i) => {
+            const steps = ['servico', 'profissional', 'data', 'horario', 'dados'];
+            const currentIndex = steps.indexOf(step);
+            const stepIndex = steps.indexOf(s);
+            const isCompleted = currentIndex > stepIndex;
+            const isCurrent = step === s;
+
+            return (
+              <div key={s} className="flex items-center">
+                <div
+                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-300 ${
+                    isCurrent
+                      ? 'bg-blue-600 text-white scale-110'
+                      : isCompleted
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-300 text-gray-600'
+                  }`}
+                >
+                  {isCompleted ? (
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  ) : (
+                    i + 1
+                  )}
+                </div>
+                {i < 4 && (
+                  <div className={`w-6 sm:w-8 h-0.5 mx-1 transition-all duration-300 ${
+                    isCompleted ? 'bg-green-500' : 'bg-gray-300'
+                  }`} />
+                )}
               </div>
-              {i < 4 && <div className="w-6 sm:w-8 h-0.5 bg-gray-300 mx-1" />}
-            </div>
-          ))}
+            );
+          })}
+        </div>
+        {/* Progress Bar */}
+        <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+          <div 
+            className="bg-blue-600 h-1.5 transition-all duration-500 ease-out"
+            style={{ 
+              width: `${(['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1) * 20}%` 
+            }}
+          />
         </div>
       </div>
 
@@ -285,6 +319,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
             onChangePacotes={setPacotesIds}
             onNext={() => setStep('profissional')}
             onBack={undefined}
+            loading={loadingServicos}
           />
         )}
 
@@ -295,6 +330,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
             onChange={setProfissionalId}
             onNext={() => setStep('data')}
             onBack={() => setStep('servico')}
+            loading={loadingProfissionais}
           />
         )}
 
