@@ -15,6 +15,7 @@ import SelecionarHorario from './SelecionarHorario';
 import SelecionarServico from './SelecionarServico';
 import SelecionarProfissional from './SelecionarProfissional';
 import DadosCliente from './DadosCliente';
+import StickyBookingSummary from './StickyBookingSummary';
 import { Session } from '@supabase/supabase-js';
 
 interface Props {
@@ -234,19 +235,29 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
   // Formulário principal
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-      {/* Header */}
-      <div className="bg-blue-600 px-5 py-4 sm:px-8 sm:py-6 text-white">
-        <div className="flex items-center gap-4">
-          {estabelecimento.logo_url && (
-            <img
-              src={estabelecimento.logo_url}
-              alt={estabelecimento.nome}
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white p-1 object-contain"
-            />
-          )}
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold">{estabelecimento.nome}</h1>
+    <>
+      {/* Sticky Booking Summary - Mobile Only */}
+      <StickyBookingSummary
+        servicos={servicos.filter(s => servicosIds.includes(s.id))}
+        profissional={profissionais.find(p => p.id === profissionalId) || null}
+        data={data}
+        horario={horario}
+        currentStep={['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1}
+      />
+
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* Header */}
+        <div className="bg-blue-600 px-5 py-4 sm:px-8 sm:py-6 text-white">
+          <div className="flex items-center gap-4">
+            {estabelecimento.logo_url && (
+              <img
+                src={estabelecimento.logo_url}
+                alt={estabelecimento.nome}
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white p-1 object-contain"
+              />
+            )}
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold">{estabelecimento.nome}</h1>
             <p className="text-sm sm:text-base text-blue-100">Agendamento online</p>
           </div>
         </div>
@@ -347,5 +358,6 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         )}
       </div>
     </div>
+    </>
   );
 }

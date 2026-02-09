@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import BottomSheet from './BottomSheet';
 
 interface Props {
   data: string;
@@ -17,6 +18,7 @@ export default function SelecionarData({
 }: Props) {
   const [mes, setMes] = useState(new Date());
   const [diasDisponiveis, setDiasDisponiveis] = useState<string[]>([]);
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   useEffect(() => {
     calcularDiasDisponiveis();
@@ -104,56 +106,144 @@ export default function SelecionarData({
         <p className="text-base sm:text-lg text-gray-600 mt-2">Selecione o dia desejado</p>
       </div>
 
-      {/* Navegação do mês */}
-      <div className="flex items-center justify-between py-3">
-        <button
-          onClick={mesAnterior}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700 hover:text-gray-900"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      {/* Botão para abrir Bottom Sheet no mobile */}
+      <button
+        onClick={() => setShowBottomSheet(true)}
+        className="w-full md:hidden flex items-center justify-between px-5 py-4 bg-white border-2 border-gray-300 hover:border-blue-400 rounded-xl transition-all"
+      >
+        <div className="flex items-center gap-3">
+          <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-        </button>
-        <h3 className="text-lg sm:text-xl font-bold capitalize text-gray-900">
-          {mes.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
-        </h3>
-        <button
-          onClick={proximoMes}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700 hover:text-gray-900"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+          <div className="text-left">
+            {data ? (
+              <>
+                <p className="text-sm text-gray-500">Data selecionada</p>
+                <p className="font-semibold text-gray-900">
+                  {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', {
+                    day: 'numeric',
+                    month: 'long',
+                  })}
+                </p>
+              </>
+            ) : (
+              <p className="text-gray-700">Selecionar data</p>
+            )}
+          </div>
+        </div>
+        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* Calendário Desktop (sempre visível) */}
+      <div className="hidden md:block space-y-4">
+        {/* Navegação do mês */}
+        <div className="flex items-center justify-between py-3">
+          <button
+            onClick={mesAnterior}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700 hover:text-gray-900"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h3 className="text-lg sm:text-xl font-bold capitalize text-gray-900">
+            {mes.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+          </h3>
+          <button
+            onClick={proximoMes}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700 hover:text-gray-900"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Calendário */}
+        <div>
+          <div className="grid grid-cols-7 gap-2 sm:gap-3 mb-3 text-center text-sm sm:text-base font-semibold text-gray-700">
+            <div>D</div>
+            <div>S</div>
+            <div>T</div>
+            <div>Q</div>
+            <div>Q</div>
+            <div>S</div>
+            <div>S</div>
+          </div>
+          <div className="grid grid-cols-7 gap-2 sm:gap-3">
+            {renderCalendario()}
+          </div>
+        </div>
+
+        {data && (
+          <div className="bg-blue-50 rounded-lg p-4 text-center">
+            <p className="text-base sm:text-lg text-blue-900 font-medium">
+              {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+              })}
+            </p>
+          </div>
+        )}
       </div>
 
-      {/* Calendário */}
-      <div>
-        <div className="grid grid-cols-7 gap-2 sm:gap-3 mb-3 text-center text-sm sm:text-base font-semibold text-gray-700">
-          <div>D</div>
-          <div>S</div>
-          <div>T</div>
-          <div>Q</div>
-          <div>Q</div>
-          <div>S</div>
-          <div>S</div>
+      {/* Bottom Sheet Mobile */}
+      <BottomSheet
+        isOpen={showBottomSheet}
+        onClose={() => setShowBottomSheet(false)}
+        title="Selecionar Data"
+      >
+        {/* Navegação do mês */}
+        <div className="flex items-center justify-between py-3 mb-4">
+          <button
+            onClick={mesAnterior}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h3 className="text-lg font-bold capitalize text-gray-900">
+            {mes.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+          </h3>
+          <button
+            onClick={proximoMes}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
-        <div className="grid grid-cols-7 gap-2 sm:gap-3">
-          {renderCalendario()}
-        </div>
-      </div>
 
-      {data && (
-        <div className="bg-blue-50 rounded-lg p-4 text-center">
-          <p className="text-base sm:text-lg text-blue-900 font-medium">
-            {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', {
-              weekday: 'long',
-              day: 'numeric',
-              month: 'long',
-            })}
-          </p>
+        {/* Calendário */}
+        <div className="mb-4">
+          <div className="grid grid-cols-7 gap-2 mb-3 text-center text-sm font-semibold text-gray-700">
+            <div>D</div>
+            <div>S</div>
+            <div>T</div>
+            <div>Q</div>
+            <div>Q</div>
+            <div>S</div>
+            <div>S</div>
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {renderCalendario()}
+          </div>
         </div>
-      )}
+
+        {/* Botão confirmar */}
+        <button
+          onClick={() => setShowBottomSheet(false)}
+          disabled={!data}
+          className="w-full py-4 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+        >
+          Confirmar
+        </button>
+      </BottomSheet>
 
       {/* Botões */}
       <div className="flex gap-3">

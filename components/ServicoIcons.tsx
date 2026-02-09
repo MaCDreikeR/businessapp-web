@@ -1,5 +1,7 @@
 // Ícones de serviços por categoria/palavra-chave
-export function getServicoIcon(nome: string): JSX.Element {
+import { ReactElement } from 'react'
+
+export function getServicoIcon(nome: string): ReactElement {
   const nomeLower = nome.toLowerCase();
   
   // Cabelo
