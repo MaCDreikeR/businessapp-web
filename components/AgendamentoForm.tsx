@@ -16,6 +16,7 @@ import SelecionarServico from './SelecionarServico';
 import SelecionarProfissional from './SelecionarProfissional';
 import DadosCliente from './DadosCliente';
 import StickyBookingSummary from './StickyBookingSummary';
+import BookingSummaryDesktop from './BookingSummaryDesktop';
 import { getServicoIcon } from './ServicoIcons';
 import { Session } from '@supabase/supabase-js';
 
@@ -255,23 +256,27 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* Header com Glassmorphism */}
-        <div className="glass-effect px-5 py-4 sm:px-8 sm:py-6 text-white relative">
-          <div className="flex items-center gap-4">
-            {estabelecimento.logo_url && (
-              <img
-                src={estabelecimento.logo_url}
-                alt={estabelecimento.nome}
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white p-1 object-contain shadow-lg"
-              />
-            )}
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold drop-shadow-md">{estabelecimento.nome}</h1>
-            <p className="text-sm sm:text-base text-blue-100">Agendamento online</p>
-          </div>
-        </div>
-      </div>
+      {/* Layout de 2 colunas no desktop */}
+      <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
+        {/* Coluna principal - Formulário */}
+        <div className="md:col-span-2">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            {/* Header com Glassmorphism */}
+            <div className="glass-effect px-5 py-4 sm:px-8 sm:py-6 text-white relative">
+              <div className="flex items-center gap-4">
+                {estabelecimento.logo_url && (
+                  <img
+                    src={estabelecimento.logo_url}
+                    alt={estabelecimento.nome}
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white p-1 object-contain shadow-lg"
+                  />
+                )}
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold drop-shadow-md">{estabelecimento.nome}</h1>
+                  <p className="text-sm sm:text-base text-blue-100">Agendamento online</p>
+                </div>
+              </div>
+            </div>
 
       {/* Progress Bar - Sticky no mobile */}
       <div className="sticky top-0 md:relative z-30 px-5 py-3 sm:px-8 sm:py-4 bg-white border-b shadow-md md:shadow-none">
@@ -361,13 +366,15 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         </div>
       </div>
 
-      {/* Form Content */}
-      <div className="p-5 sm:p-8">
-        {error && (
-          <div className="mb-5 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-base">
-            {error}
-          </div>
-        )}
+      {/* Layout com 2 colunas no desktop */}
+      <div className="md:grid md:grid-cols-3 md:gap-8 p-5 sm:p-8">
+        {/* Coluna principal - Formulário */}
+        <div className="md:col-span-2">
+          {error && (
+            <div className="mb-5 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-base">
+              {error}
+            </div>
+          )}
 
         {step === 'servico' && (
           <SelecionarServico
@@ -436,6 +443,21 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         )}
       </div>
     </div>
+
+    {/* Coluna lateral - Resumo Desktop */}
+    <div className="md:col-span-1">
+      <BookingSummaryDesktop
+        servicos={[...servicosSelecionados, ...pacotesSelecionados] as any}
+        profissional={profissionalSelecionado || null}
+        data={data}
+        horario={horario}
+        currentStep={currentStepNumber}
+      />
+    </div>
+  </div>
+    </>
+  );
+}
     </>
   );
 }
