@@ -48,9 +48,9 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
 
         {/* Header */}
         {title && (
-          <div className="px-5 pb-3 border-b border-gray-100">
+          <div className="px-4 pb-2 border-b border-gray-100">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+              <h3 className="text-base font-semibold text-gray-900">{title}</h3>
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -64,7 +64,7 @@ export default function BottomSheet({ isOpen, onClose, children, title }: Bottom
         )}
 
         {/* Content */}
-        <div className="overflow-y-auto max-h-[calc(85vh-80px)] p-5">
+        <div className="overflow-y-auto max-h-[calc(85vh-80px)] p-4">
           {children}
         </div>
       </div>

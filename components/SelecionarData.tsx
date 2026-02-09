@@ -99,6 +99,46 @@ export default function SelecionarData({
     return dias;
   }
 
+  function renderCalendarioMobile() {
+    const primeiroDia = new Date(mes.getFullYear(), mes.getMonth(), 1);
+    const ultimoDia = new Date(mes.getFullYear(), mes.getMonth() + 1, 0);
+    const diasNoMes = ultimoDia.getDate();
+    const inicioDaSemana = primeiroDia.getDay();
+
+    const dias = [];
+    
+    // Dias vazios antes do primeiro dia
+    for (let i = 0; i < inicioDaSemana; i++) {
+      dias.push(<div key={`empty-${i}`} />);
+    }
+
+    // Dias do mês - versão compacta para mobile
+    for (let dia = 1; dia <= diasNoMes; dia++) {
+      const dataStr = `${mes.getFullYear()}-${String(mes.getMonth() + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+      const disponivel = diasDisponiveis.includes(dataStr);
+      const selecionado = data === dataStr;
+
+      dias.push(
+        <button
+          key={dataStr}
+          disabled={!disponivel}
+          onClick={() => disponivel && onChange(dataStr)}
+          className={`aspect-square p-1 rounded-md text-sm font-semibold transition-all ${
+            selecionado
+              ? 'bg-primary text-white ring-2 ring-primary shadow-md'
+              : disponivel
+              ? 'bg-white hover:bg-purple-50 text-gray-900 border border-gray-300 hover:border-primary'
+              : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+          }`}
+        >
+          {dia}
+        </button>
+      );
+    }
+
+    return dias;
+  }
+
   return (
     <div className="space-y-5 animate-fade-in">
       <div>
@@ -197,31 +237,31 @@ export default function SelecionarData({
         title="Selecionar Data"
       >
         {/* Navegação do mês */}
-        <div className="flex items-center justify-between py-3 mb-4">
+        <div className="flex items-center justify-between py-1.5 mb-2">
           <button
             onClick={mesAnterior}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
+            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h3 className="text-lg font-bold capitalize text-gray-900">
+          <h3 className="text-base font-bold capitalize text-gray-900">
             {mes.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
           </h3>
           <button
             onClick={proximoMes}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
+            className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors text-gray-700"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
 
         {/* Calendário */}
-        <div className="mb-4">
-          <div className="grid grid-cols-7 gap-2 mb-3 text-center text-sm font-semibold text-gray-700">
+        <div className="mb-3">
+          <div className="grid grid-cols-7 gap-1 mb-2 text-center text-xs font-semibold text-gray-500">
             <div>D</div>
             <div>S</div>
             <div>T</div>
@@ -230,8 +270,8 @@ export default function SelecionarData({
             <div>S</div>
             <div>S</div>
           </div>
-          <div className="grid grid-cols-7 gap-2">
-            {renderCalendario()}
+          <div className="grid grid-cols-7 gap-1">
+            {renderCalendarioMobile()}
           </div>
         </div>
 
@@ -239,7 +279,7 @@ export default function SelecionarData({
         <button
           onClick={() => setShowBottomSheet(false)}
           disabled={!data}
-          className="w-full py-4 rounded-xl font-semibold bg-primary text-white hover:bg-primary-dark disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 rounded-xl text-base font-semibold bg-primary text-white hover:bg-primary-dark disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           Confirmar
         </button>

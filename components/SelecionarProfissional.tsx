@@ -59,14 +59,6 @@ export default function SelecionarProfissional({
                   <h4 className="font-semibold text-base sm:text-lg text-gray-900">
                     {prof.nome_completo || 'Profissional'}
                   </h4>
-                  {profissionalId === prof.id && (
-                    <div className="inline-flex items-center mt-1">
-                      <div className="w-5 h-5 border-2 border-primary rounded-full flex items-center justify-center">
-                        <div className="w-2 h-3 border-r-2 border-b-2 border-primary transform rotate-45 animate-checkmark" />
-                      </div>
-                      <span className="ml-2 text-sm text-primary font-medium">Selecionado</span>
-                    </div>
-                  )}
                 </div>
               </div>
             </button>
@@ -78,14 +70,6 @@ export default function SelecionarProfissional({
       {profissionais.length === 0 && (
         <div className="text-center py-12 text-gray-500 text-base">
           Nenhum profissional disponível
-        </div>
-      )}
-
-      {profissionalId && (
-        <div className="bg-purple-50 rounded-lg p-4 text-center">
-          <p className="text-base sm:text-lg text-blue-900 font-medium">
-            Profissional selecionado
-          </p>
         </div>
       )}
 
