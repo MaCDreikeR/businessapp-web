@@ -159,8 +159,8 @@ export default async function AgendarPage({ params }: PageProps) {
 
   // Agendamento online ativo
   return (
-    <div className="min-h-screen bg-gray-50 py-6 px-4 sm:py-12 sm:px-6">
-      <div className="max-w-lg mx-auto" style={{ transform: 'scale(0.6)', transformOrigin: 'top center' }}>
+    <div className="min-h-screen xl:min-h-0 bg-gray-50 py-6 px-4 sm:py-12 sm:px-6 xl:py-8">
+      <div className="w-full max-w-lg mx-auto xl:scale-[0.6] xl:origin-top">
         <AgendamentoForm 
           estabelecimento={estabelecimento}
           config={config}

@@ -257,7 +257,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   return (
     <>
       {/* Resumo Desktop - lateral direita ao lado do formulário */}
-      <div className="hidden xl:block fixed left-1/2 top-6 ml-[280px] w-[320px] z-10">
+      <div className="hidden xl:block fixed left-1/2 top-0 ml-[280px] w-[320px] z-10">
         <BookingSummaryDesktop
           servicos={[...servicosSelecionados, ...pacotesSelecionados]}
           profissional={profissionalSelecionado || null}
@@ -268,7 +268,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
       </div>
 
       {/* Formulário principal */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden w-full">
             {/* Header com Glassmorphism */}
             <div className="glass-effect px-4 py-3 text-white relative">
               <div className="flex items-center gap-3">
@@ -287,74 +287,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
             </div>
 
             {/* Progress Bar - Sticky no mobile */}
-            <div className="sticky top-0 md:relative z-30 px-4 py-2.5 bg-white border-b shadow-md md:shadow-none">
-              {/* Resumo visual - só mobile e a partir da etapa 2 */}
-              {currentStepNumber >= 2 && todosItensSelecionados.length > 0 && (
-                <div className="md:hidden mb-2 pb-2 border-b border-gray-200 space-y-1 text-xs">
-            {/* Data e Horário */}
-            {data && (
-              <div className="flex items-start gap-2">
-                <span className="text-lg">📅</span>
-                <div>
-                  <p className="font-semibold text-gray-900">
-                    {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', { 
-                      weekday: 'long', 
-                      day: 'numeric', 
-                      month: 'long' 
-                    }).replace(/^\w/, c => c.toUpperCase())}
-                  </p>
-                  {horario && totalDuracao > 0 && (
-                    <p className="text-gray-600">
-                      🕐 {horario} - {(() => {
-                        const [h, m] = horario.split(':').map(Number);
-                        const totalMinutos = h * 60 + m + totalDuracao;
-                        const horaFim = Math.floor(totalMinutos / 60);
-                        const minutoFim = totalMinutos % 60;
-                        return `${String(horaFim).padStart(2, '0')}:${String(minutoFim).padStart(2, '0')}`;
-                      })()}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Serviços/Pacotes */}
-            <div className="space-y-1">
-              {servicosSelecionados.map((servico) => (
-                <div key={servico.id} className="flex items-center gap-2 text-gray-900">
-                  <span className="flex-shrink-0 text-blue-600">
-                    {getServicoIcon(servico.nome)}
-                  </span>
-                  <span>{servico.nome}</span>
-                </div>
-              ))}
-              {pacotesSelecionados.map((pacote) => (
-                <div key={pacote.id} className="flex items-center gap-2 text-gray-900">
-                  <span className="flex-shrink-0 text-blue-600">
-                    {getServicoIcon(pacote.nome)}
-                  </span>
-                  <span>{pacote.nome}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Profissional - sempre mostra a partir da etapa 2 */}
-            {currentStepNumber >= 2 && (
-              <div className="flex items-start gap-2">
-                <span className="text-lg">👤</span>
-                <p className="text-gray-900">
-                  {profissionalSelecionado?.nome_completo || 'Não selecionado'}
-                </p>
-              </div>
-            )}
-
-            {/* Preço Total */}
-            <div className="flex items-start gap-2">
-              <span className="text-lg">💰</span>
-              <p className="font-bold text-blue-600">R$ {totalPreco.toFixed(2)}</p>
-            </div>
-          </div>
-        )}
+            <div className="relative z-30 px-4 py-2.5 bg-white border-b shadow-md md:shadow-none">
         
         <div className="flex items-center justify-between mb-1">
           <span className="text-sm font-medium text-gray-600">
