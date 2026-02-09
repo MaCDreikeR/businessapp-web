@@ -218,8 +218,8 @@ export default function SelecionarHorario({
               onClick={() => onChange(h)}
               className={`relative py-4 px-4 rounded-xl text-base font-semibold transition-all duration-200 ${
                 horario === h
-                  ? 'bg-[#7C3AED] text-white shadow-md'
-                  : 'bg-white border border-gray-200 hover:border-[#7C3AED] text-gray-900 hover:bg-purple-50'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'bg-white border border-gray-200 hover:border-primary text-gray-900 hover:bg-purple-50'
               } md:py-3`}
             >
               <div className="flex items-center justify-between md:justify-center gap-2">
@@ -272,7 +272,7 @@ export default function SelecionarHorario({
         <button
           onClick={onNext}
           disabled={!horario}
-          className="flex-1 py-4 px-6 rounded-lg text-lg font-semibold bg-[#7C3AED] text-white hover:bg-[#6D28D9] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 py-4 px-6 rounded-lg text-lg font-semibold bg-primary text-white hover:bg-primary-dark disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           Continuar
         </button>

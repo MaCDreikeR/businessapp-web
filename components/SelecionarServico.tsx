@@ -154,14 +154,14 @@ export default function SelecionarServico({
                     onClick={() => toggleServico(servico.id)}
                     className={`w-full text-left p-5 rounded-xl transition-all duration-200 hover-lift animate-fade-in-up ${delayClass} ${
                       selecionado
-                        ? 'bg-purple-50 border-l-4 border-[#7C3AED] shadow-sm'
+                        ? 'bg-purple-50 border-l-4 border-primary shadow-sm'
                         : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm'
                     }`}
                   >
                     <div className="flex items-start gap-4">
                       {/* Ícone do Serviço */}
                       <div className={`p-2.5 rounded-lg transition-colors ${
-                        selecionado ? 'bg-purple-100 text-[#7C3AED]' : 'bg-gray-50 text-gray-500'
+                        selecionado ? 'bg-purple-100 text-primary' : 'bg-gray-50 text-gray-500'
                       }`}>
                         {getServicoIcon(servico.nome)}
                       </div>
@@ -171,9 +171,7 @@ export default function SelecionarServico({
                           <h4 className="font-semibold text-base text-gray-900 truncate">
                             {servico.nome}
                           </h4>
-                          <p className={`font-semibold text-base whitespace-nowrap ${
-                            selecionado ? 'text-[#10B981]' : 'text-[#10B981]'
-                          }`}>
+                          <p className="font-semibold text-base whitespace-nowrap text-secondary">
                             R$ {servico.preco.toFixed(2)}
                           </p>
                         </div>
@@ -193,10 +191,10 @@ export default function SelecionarServico({
                           {selecionado && (
                             <>
                               <span className="mx-1.5 text-gray-300">•</span>
-                              <svg className="w-4 h-4 text-[#7C3AED]" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs text-[#7C3AED] font-medium">Selecionado</span>
+                              <span className="text-xs text-primary font-medium">Selecionado</span>
                             </>
                           )}
                         </div>
@@ -269,9 +267,7 @@ export default function SelecionarServico({
                               Pacote
                             </span>
                           </div>
-                          <p className={`font-semibold text-base whitespace-nowrap ${
-                            selecionado ? 'text-[#10B981]' : 'text-[#10B981]'
-                          }`}>
+                          <p className="font-semibold text-base whitespace-nowrap text-secondary">
                             R$ {pacote.valor.toFixed(2)}
                           </p>
                         </div>
@@ -295,10 +291,10 @@ export default function SelecionarServico({
                           {selecionado && (
                             <>
                               <span className="mx-1.5 text-gray-300">•</span>
-                              <svg className="w-4 h-4 text-[#7C3AED]" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs text-[#7C3AED] font-medium">Selecionado</span>
+                              <span className="text-xs text-primary font-medium">Selecionado</span>
                             </>
                           )}
                         </div>
@@ -324,7 +320,7 @@ export default function SelecionarServico({
             {servicosSelecionados.map(s => (
               <div key={s.id} className="flex justify-between items-center text-sm">
                 <span className="text-gray-700">• {s.nome}</span>
-                <span className="font-medium text-[#10B981]">R$ {s.preco.toFixed(2)}</span>
+                <span className="font-medium text-secondary">R$ {s.preco.toFixed(2)}</span>
               </div>
             ))}
             {pacotesSelecionados.map(p => (
@@ -335,7 +331,7 @@ export default function SelecionarServico({
                     Pacote
                   </span>
                 </span>
-                <span className="font-medium text-[#10B981]">R$ {p.valor.toFixed(2)}</span>
+                <span className="font-medium text-secondary">R$ {p.valor.toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -344,7 +340,7 @@ export default function SelecionarServico({
               <div className="text-sm text-gray-600">
                 Total: <span className="font-medium text-gray-900">{duracaoTotal} min</span>
               </div>
-              <div className="text-lg font-bold text-[#10B981]">
+              <div className="text-lg font-bold text-secondary">
                 R$ {valorTotal.toFixed(2)}
               </div>
             </div>

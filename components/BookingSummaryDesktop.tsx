@@ -50,7 +50,7 @@ export default function BookingSummaryDesktop({
     <div className="hidden md:block sticky top-6 bg-white rounded-xl shadow-lg p-6 space-y-4 border border-gray-100">
       <div className="flex items-center justify-between border-b border-gray-200 pb-3">
         <h3 className="text-lg font-bold text-gray-900">Resumo do Agendamento</h3>
-        <div className="w-2 h-2 bg-[#7C3AED] rounded-full animate-pulse"></div>
+        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
       </div>
 
       <div className="space-y-4">
@@ -58,7 +58,7 @@ export default function BookingSummaryDesktop({
         {data && (
           <div className="space-y-2">
             <div className="flex items-start gap-3">
-              <svg className="w-5 h-5 text-[#7C3AED] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               <div className="flex-1">
@@ -95,7 +95,7 @@ export default function BookingSummaryDesktop({
         {/* Serviços */}
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <svg className="w-5 h-5 text-[#7C3AED] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
             <div className="flex-1">
@@ -114,7 +114,7 @@ export default function BookingSummaryDesktop({
                       {Math.floor(duracao / 60)}h {duracao % 60}min
                     </p>
                   </div>
-                  <p className="text-[#10B981] font-semibold">
+                  <p className="text-secondary font-semibold">
                     R$ {preco.toFixed(2)}
                   </p>
                 </div>
@@ -146,7 +146,7 @@ export default function BookingSummaryDesktop({
               {Math.floor(totalDuracao / 60)}h {totalDuracao % 60}min
             </p>
           </div>
-          <p className="text-2xl font-bold text-[#10B981]">
+          <p className="text-2xl font-bold text-secondary">
             R$ {totalPreco.toFixed(2)}
           </p>
         </div>
@@ -155,7 +155,7 @@ export default function BookingSummaryDesktop({
       {/* Badge de progresso */}
       <div className="bg-purple-50 rounded-lg px-4 py-3 border border-purple-100">
         <div className="flex items-center gap-3">
-          <svg className="w-5 h-5 text-[#7C3AED]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <div className="flex-1">
