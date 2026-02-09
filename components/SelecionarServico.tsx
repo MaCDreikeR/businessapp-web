@@ -148,51 +148,52 @@ export default function SelecionarServico({
                   <button
                     key={servico.id}
                     onClick={() => toggleServico(servico.id)}
-                    className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 ${
                       selecionado
-                        ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-600 ring-offset-2 shadow-lg'
-                        : 'border-gray-300 hover:border-blue-400 bg-white hover:shadow-md'
+                        ? 'bg-blue-50 border-l-4 border-blue-600 shadow-sm'
+                        : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm hover:shadow'
                     }`}
                   >
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-4">
                       {/* Ícone do Serviço */}
-                      <div className={`mt-1 p-2 rounded-lg flex-shrink-0 ${
-                        selecionado ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'
+                      <div className={`p-2.5 rounded-lg transition-colors ${
+                        selecionado ? 'bg-blue-100 text-blue-600' : 'bg-gray-50 text-gray-500'
                       }`}>
                         {getServicoIcon(servico.nome)}
                       </div>
 
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-semibold text-base sm:text-lg text-gray-900">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start gap-4 mb-1">
+                          <h4 className="font-semibold text-base text-gray-900 truncate">
                             {servico.nome}
                           </h4>
-                          <p className="font-bold text-lg text-blue-600 ml-4">
+                          <p className={`font-semibold text-base whitespace-nowrap ${
+                            selecionado ? 'text-blue-600' : 'text-gray-900'
+                          }`}>
                             R$ {servico.preco.toFixed(2)}
                           </p>
                         </div>
                         
                         {servico.descricao && (
-                          <p className="text-sm text-gray-600 mb-2">{servico.descricao}</p>
+                          <p className="text-sm text-gray-500 mb-2 line-clamp-2">{servico.descricao}</p>
                         )}
                         
-                        <div className="flex items-center gap-4">
-                          {/* Duração */}
-                          <div className="flex items-center gap-1.5 text-gray-600">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span className="text-sm font-medium">{formatDuracao(servico.duracao)}</span>
-                          </div>
+                        {/* Duração */}
+                        <div className="flex items-center gap-1.5 text-gray-500">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-xs">{formatDuracao(servico.duracao)}</span>
                           
-                          {/* Badge de selecionado */}
+                          {/* Check sutil quando selecionado */}
                           {selecionado && (
-                            <div className="flex items-center gap-1 text-blue-600">
-                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <>
+                              <span className="mx-1.5 text-gray-300">•</span>
+                              <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs font-semibold">Selecionado</span>
-                            </div>
+                              <span className="text-xs text-blue-600 font-medium">Selecionado</span>
+                            </>
                           )}
                         </div>
                       </div>
@@ -239,60 +240,61 @@ export default function SelecionarServico({
                   <button
                     key={pacote.id}
                     onClick={() => togglePacote(pacote.id)}
-                    className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                    className={`w-full text-left p-5 rounded-xl transition-all duration-200 ${
                       selecionado
-                        ? 'border-purple-600 bg-purple-50 ring-2 ring-purple-600 ring-offset-2 shadow-lg'
-                        : 'border-gray-300 hover:border-purple-400 bg-white hover:shadow-md'
+                        ? 'bg-purple-50 border-l-4 border-purple-600 shadow-sm'
+                        : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm hover:shadow'
                     }`}
                   >
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-4">
                       {/* Ícone do Pacote */}
-                      <div className={`mt-1 p-2 rounded-lg flex-shrink-0 ${
-                        selecionado ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-600'
+                      <div className={`p-2.5 rounded-lg transition-colors ${
+                        selecionado ? 'bg-purple-100 text-purple-600' : 'bg-gray-50 text-gray-500'
                       }`}>
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                         </svg>
                       </div>
 
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex justify-between items-start gap-4 mb-1">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-base sm:text-lg text-gray-900">{pacote.nome}</h4>
-                            <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold rounded">
-                              PACOTE
+                            <h4 className="font-semibold text-base text-gray-900 truncate">{pacote.nome}</h4>
+                            <span className="px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded uppercase tracking-wide">
+                              Pacote
                             </span>
                           </div>
-                          <p className="font-bold text-lg text-purple-600 ml-4">
+                          <p className={`font-semibold text-base whitespace-nowrap ${
+                            selecionado ? 'text-purple-600' : 'text-gray-900'
+                          }`}>
                             R$ {pacote.valor.toFixed(2)}
                           </p>
                         </div>
                         
                         {pacote.descricao && (
-                          <p className="text-sm text-gray-600 mb-2">{pacote.descricao}</p>
+                          <p className="text-sm text-gray-500 mb-2 line-clamp-2">{pacote.descricao}</p>
                         )}
                         
-                        <div className="flex items-center gap-4">
-                          {/* Duração */}
-                          <div className="flex items-center gap-1.5 text-gray-600">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span className="text-sm font-medium">
-                              {pacote.duracao_total ? formatDuracao(pacote.duracao_total) : (
-                                <span className="text-orange-600">Duração não definida</span>
-                              )}
-                            </span>
-                          </div>
+                        {/* Duração */}
+                        <div className="flex items-center gap-1.5 text-gray-500">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-xs">
+                            {pacote.duracao_total ? formatDuracao(pacote.duracao_total) : (
+                              <span className="text-orange-500">Duração não definida</span>
+                            )}
+                          </span>
                           
-                          {/* Badge de selecionado */}
+                          {/* Check sutil quando selecionado */}
                           {selecionado && (
-                            <div className="flex items-center gap-1 text-purple-600">
-                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <>
+                              <span className="mx-1.5 text-gray-300">•</span>
+                              <svg className="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs font-semibold">Selecionado</span>
-                            </div>
+                              <span className="text-xs text-purple-600 font-medium">Selecionado</span>
+                            </>
                           )}
                         </div>
                       </div>
@@ -311,26 +313,35 @@ export default function SelecionarServico({
 
       {/* Resumo da Seleção */}
       {temSelecao && (
-        <div className="bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-300 rounded-lg p-4">
-          <h3 className="font-bold text-gray-900 mb-2">Resumo da Seleção</h3>
-          <div className="space-y-1 text-sm">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">Resumo da Seleção</h3>
+          <div className="space-y-2">
             {servicosSelecionados.map(s => (
-              <div key={s.id} className="flex justify-between text-gray-700">
-                <span>• {s.nome}</span>
-                <span>R$ {s.preco.toFixed(2)}</span>
+              <div key={s.id} className="flex justify-between items-center text-sm">
+                <span className="text-gray-700">• {s.nome}</span>
+                <span className="font-medium text-gray-900">R$ {s.preco.toFixed(2)}</span>
               </div>
             ))}
             {pacotesSelecionados.map(p => (
-              <div key={p.id} className="flex justify-between text-gray-700">
-                <span>• {p.nome} <span className="text-xs text-purple-600">(PACOTE)</span></span>
-                <span>R$ {p.valor.toFixed(2)}</span>
+              <div key={p.id} className="flex justify-between items-center text-sm">
+                <span className="text-gray-700">
+                  • {p.nome} 
+                  <span className="ml-1.5 px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded uppercase">
+                    Pacote
+                  </span>
+                </span>
+                <span className="font-medium text-gray-900">R$ {p.valor.toFixed(2)}</span>
               </div>
             ))}
           </div>
-          <div className="mt-3 pt-3 border-t border-gray-300">
-            <div className="flex justify-between font-bold text-base text-gray-900">
-              <span>Total: {duracaoTotal} min</span>
-              <span>R$ {valorTotal.toFixed(2)}</span>
+          <div className="mt-4 pt-4 border-t border-blue-200">
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-600">
+                Total: <span className="font-medium text-gray-900">{duracaoTotal} min</span>
+              </div>
+              <div className="text-lg font-bold text-blue-600">
+                R$ {valorTotal.toFixed(2)}
+              </div>
             </div>
           </div>
         </div>
