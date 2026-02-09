@@ -16,7 +16,6 @@ import SelecionarHorario from './SelecionarHorario';
 import SelecionarServico from './SelecionarServico';
 import SelecionarProfissional from './SelecionarProfissional';
 import DadosCliente from './DadosCliente';
-import StickyBookingSummary from './StickyBookingSummary';
 import BookingSummaryDesktop from './BookingSummaryDesktop';
 import { getServicoIcon } from './ServicoIcons';
 import { Session } from '@supabase/supabase-js';
@@ -60,6 +59,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState(false);
+  const [showMobileDrawer, setShowMobileDrawer] = useState(false);
 
   // Verificar autenticação
   useEffect(() => {
@@ -386,6 +386,170 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
           />
         )}
       </div>
+    </div>
+
+    {/* Resumo Mobile - Modal flutuante saindo do botão */}
+    <div className="xl:hidden">
+      {currentStepNumber >= 2 && todosItensSelecionados.length > 0 && (
+        <>
+          {/* Botão flutuante */}
+          <button
+            onClick={() => setShowMobileDrawer(!showMobileDrawer)}
+            className="fixed right-4 bottom-24 z-50 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+            aria-label="Ver resumo do agendamento"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            {todosItensSelecionados.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                {todosItensSelecionados.length}
+              </span>
+            )}
+          </button>
+
+          {/* Backdrop sutil */}
+          {showMobileDrawer && (
+            <div
+              className="fixed inset-0 bg-black/30 z-40 transition-opacity backdrop-blur-[2px]"
+              onClick={() => setShowMobileDrawer(false)}
+            />
+          )}
+
+          {/* Modal flutuante - Parece sair do botão */}
+          <div
+            className={`fixed bottom-[120px] right-4 w-[calc(100vw-2rem)] max-w-[380px] bg-white rounded-2xl shadow-2xl z-50 transform transition-all duration-300 ease-out overflow-hidden ${
+              showMobileDrawer ? 'scale-100 opacity-100' : 'scale-75 opacity-0 pointer-events-none'
+            }`}
+            style={{
+              transformOrigin: 'bottom right',
+              boxShadow: '0 25px 50px -12px rgba(124, 58, 237, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)'
+            }}
+          >
+            {/* Header minimalista */}
+            <div className="bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between">
+              <h2 className="text-base font-semibold text-gray-900">Resumo do Agendamento</h2>
+              <button
+                onClick={() => setShowMobileDrawer(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Fechar"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="max-h-[60vh] overflow-y-auto p-5 space-y-4">
+              {/* Serviços/Pacotes */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                  <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Serviços</h3>
+                </div>
+                {servicosSelecionados.map((servico) => (
+                  <div key={servico.id} className="flex justify-between items-start py-2">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 text-sm">{servico.nome}</p>
+                      <p className="text-sm text-gray-500 mt-0.5 font-medium">
+                        {Math.floor(servico.duracao / 60)}h {servico.duracao % 60}min
+                      </p>
+                    </div>
+                    <p className="font-bold text-secondary ml-3 text-sm whitespace-nowrap">
+                      R$ {servico.preco.toFixed(2)}
+                    </p>
+                  </div>
+                ))}
+                {pacotesSelecionados.map((pacote) => (
+                  <div key={pacote.id} className="flex justify-between items-start py-2 bg-purple-50 -mx-2 px-2 rounded-lg">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="font-medium text-gray-900 text-sm">{pacote.nome}</p>
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 bg-primary text-white rounded">
+                          PACOTE
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-0.5 font-medium">
+                        {Math.floor(pacote.duracao_total / 60)}h {pacote.duracao_total % 60}min
+                      </p>
+                    </div>
+                    <p className="font-bold text-secondary ml-3 text-sm whitespace-nowrap">
+                      R$ {pacote.valor.toFixed(2)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Profissional */}
+              {profissionalSelecionado && (
+                <div className="pt-3 border-t border-gray-100">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Profissional</h3>
+                  </div>
+                  <p className="text-gray-900 font-medium text-sm">{profissionalSelecionado.nome_completo}</p>
+                </div>
+              )}
+
+              {/* Data e Horário */}
+              {data && (
+                <div className="pt-3 border-t border-gray-100">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Data e Horário</h3>
+                  </div>
+                  <div className="space-y-0.5">
+                    <p className="text-gray-900 font-medium text-sm">
+                      {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                      }).replace(/^\w/, c => c.toUpperCase())}
+                    </p>
+                    {horario && (
+                      <p className="text-gray-600 text-sm">
+                        {horario} - {(() => {
+                          const [h, m] = horario.split(':').map(Number);
+                          const totalMinutos = h * 60 + m + totalDuracao;
+                          const horaFim = Math.floor(totalMinutos / 60);
+                          const minutoFim = totalMinutos % 60;
+                          return `${String(horaFim).padStart(2, '0')}:${String(minutoFim).padStart(2, '0')}`;
+                        })()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Total fixo no rodapé */}
+            <div className="border-t-2 border-gray-100 bg-gray-50 px-5 py-4">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                      <p className="text-sm text-gray-500 font-semibold">Total</p>
+                    <p className="text-sm text-gray-500 mt-0.5 font-medium">
+                      {Math.floor(totalDuracao / 60)}h {totalDuracao % 60}min
+                    </p>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-secondary">
+                  R$ {totalPreco.toFixed(2)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
 </>
   );
