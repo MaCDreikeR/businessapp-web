@@ -234,17 +234,14 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   }
 
   // Formulário principal
+  const currentStepNumber = ['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1;
+  const servicosSelecionados = servicos.filter(s => servicosIds.includes(s.id));
+  const totalPreco = servicosSelecionados.reduce((sum, s) => sum + s.preco, 0);
+  const totalDuracao = servicosSelecionados.reduce((sum, s) => sum + s.duracao, 0);
+  const profissionalSelecionado = profissionais.find(p => p.id === profissionalId);
+
   return (
     <>
-      {/* Sticky Booking Summary - Mobile Only */}
-      <StickyBookingSummary
-        servicos={servicos.filter(s => servicosIds.includes(s.id))}
-        profissional={profissionais.find(p => p.id === profissionalId) || null}
-        data={data}
-        horario={horario}
-        currentStep={['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1}
-      />
-
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         {/* Header */}
         <div className="bg-blue-600 px-5 py-4 sm:px-8 sm:py-6 text-white">
@@ -263,21 +260,60 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="px-5 py-3 sm:px-8 sm:py-4 bg-gray-50 border-b">
+      {/* Progress Bar - Sticky no mobile */}
+      <div className="sticky top-0 md:relative z-30 px-5 py-3 sm:px-8 sm:py-4 bg-white border-b shadow-md md:shadow-none">
+        {/* Resumo compacto - só mobile e a partir da etapa 2 */}
+        {currentStepNumber >= 2 && servicosSelecionados.length > 0 && (
+          <div className="md:hidden mb-3 pb-3 border-b border-gray-200 space-y-2">
+            {/* Serviços */}
+            <div className="flex items-start gap-2 text-xs">
+              <svg className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <div className="flex-1 min-w-0">
+                <p className="text-gray-900 font-medium truncate">{servicosSelecionados.map(s => s.nome).join(', ')}</p>
+                <p className="text-gray-500">{Math.floor(totalDuracao / 60)}h {totalDuracao % 60}min • R$ {totalPreco.toFixed(2)}</p>
+              </div>
+            </div>
+
+            {/* Profissional */}
+            {profissionalSelecionado && (
+              <div className="flex items-center gap-2 text-xs">
+                <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <p className="text-gray-900">{profissionalSelecionado.nome}</p>
+              </div>
+            )}
+
+            {/* Data e Horário */}
+            {data && (
+              <div className="flex items-center gap-2 text-xs">
+                <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p className="text-gray-900">
+                  {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
+                  {horario && ` às ${horario}`}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+        
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-600">
-            Etapa {['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1} de 5
+            Etapa {currentStepNumber} de 5
           </span>
           <span className="text-sm font-medium text-blue-600">
-            {(['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1) * 20}%
+            {currentStepNumber * 20}%
           </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
           <div 
             className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 transition-all duration-500 ease-out rounded-full"
             style={{ 
-              width: `${(['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1) * 20}%` 
+              width: `${currentStepNumber * 20}%` 
             }}
           />
         </div>

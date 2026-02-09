@@ -53,13 +53,13 @@ export default function StickyBookingSummary({
   const totalPreco = servicos.reduce((sum, s) => sum + s.preco, 0)
   const totalDuracao = servicos.reduce((sum, s) => sum + s.duracao, 0)
 
-  // Só mostra a partir da etapa 2 (quando tem pelo menos serviço selecionado)
-  if (currentStep < 2 || servicos.length === 0) {
+  // Só mostra a partir da etapa 3 (quando tem serviço e profissional)
+  if (currentStep < 3 || servicos.length === 0) {
     return null
   }
 
   return (
-    <div className="md:hidden sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
+    <div className="md:hidden sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
       <div
         className={`px-4 transition-all duration-300 overflow-hidden ${
           isCollapsed ? 'py-2' : 'py-3'
