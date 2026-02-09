@@ -252,48 +252,19 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         </div>
       </div>
 
-      {/* Progress Steps */}
-      <div className="px-5 py-4 sm:px-8 sm:py-5 bg-gray-50 border-b">
-        <div className="flex items-center justify-between mb-3">
-          {['servico', 'profissional', 'data', 'horario', 'dados'].map((s, i) => {
-            const steps = ['servico', 'profissional', 'data', 'horario', 'dados'];
-            const currentIndex = steps.indexOf(step);
-            const stepIndex = steps.indexOf(s);
-            const isCompleted = currentIndex > stepIndex;
-            const isCurrent = step === s;
-
-            return (
-              <div key={s} className="flex items-center">
-                <div
-                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-300 ${
-                    isCurrent
-                      ? 'bg-blue-600 text-white scale-110'
-                      : isCompleted
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-300 text-gray-600'
-                  }`}
-                >
-                  {isCompleted ? (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    i + 1
-                  )}
-                </div>
-                {i < 4 && (
-                  <div className={`w-6 sm:w-8 h-0.5 mx-1 transition-all duration-300 ${
-                    isCompleted ? 'bg-green-500' : 'bg-gray-300'
-                  }`} />
-                )}
-              </div>
-            );
-          })}
+      {/* Progress Bar */}
+      <div className="px-5 py-3 sm:px-8 sm:py-4 bg-gray-50 border-b">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-gray-600">
+            Etapa {['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1} de 5
+          </span>
+          <span className="text-sm font-medium text-blue-600">
+            {(['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1) * 20}%
+          </span>
         </div>
-        {/* Progress Bar */}
-        <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
           <div 
-            className="bg-blue-600 h-1.5 transition-all duration-500 ease-out"
+            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 transition-all duration-500 ease-out rounded-full"
             style={{ 
               width: `${(['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1) * 20}%` 
             }}
