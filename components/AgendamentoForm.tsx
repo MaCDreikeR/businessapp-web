@@ -304,9 +304,9 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
           <div 
             className="h-2 transition-all duration-500 ease-out rounded-full"
-            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.primaryDark})` }}
             style={{ 
-              width: `${currentStepNumber * 20}%` 
+              width: `${currentStepNumber * 20}%`,
+              background: `linear-gradient(to right, ${colors.primary}, ${colors.primaryDark})`
             }}
           />
         </div>
