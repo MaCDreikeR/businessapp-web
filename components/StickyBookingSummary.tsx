@@ -76,10 +76,10 @@ export default function StickyBookingSummary({
               <span className="text-sm font-medium text-gray-900">
                 {servicos.length} {servicos.length === 1 ? 'serviço' : 'serviços'}
               </span>
-              {profissional && profissional.nome_completo && (
+              {profissional && profissional.nome && (
                 <>
                   <span className="text-gray-400">•</span>
-                  <span className="text-sm text-gray-600">{profissional.nome_completo.split(' ')[0]}</span>
+                  <span className="text-sm text-gray-600">{profissional.nome.split(' ')[0]}</span>
                 </>
               )}
             </div>
@@ -129,7 +129,7 @@ export default function StickyBookingSummary({
                   <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  <p className="text-gray-600">{profissional.nome_completo}</p>
+                  <p className="text-gray-600">{profissional.nome}</p>
                 </div>
               )}
 

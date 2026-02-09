@@ -16,6 +16,7 @@ import SelecionarServico from './SelecionarServico';
 import SelecionarProfissional from './SelecionarProfissional';
 import DadosCliente from './DadosCliente';
 import StickyBookingSummary from './StickyBookingSummary';
+import { getServicoIcon } from './ServicoIcons';
 import { Session } from '@supabase/supabase-js';
 
 interface Props {
@@ -236,14 +237,19 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   // Formulário principal
   const currentStepNumber = ['servico', 'profissional', 'data', 'horario', 'dados'].indexOf(step) + 1;
   const servicosSelecionados = servicos.filter(s => servicosIds.includes(s.id));
-  const totalPreco = servicosSelecionados.reduce((sum, s) => sum + s.preco, 0);
-  const totalDuracao = servicosSelecionados.reduce((sum, s) => sum + s.duracao, 0);
+  const pacotesSelecionados = pacotes.filter(p => pacotesIds.includes(p.id));
+  const totalPreco = servicosSelecionados.reduce((sum, s) => sum + (s.preco || 0), 0) + pacotesSelecionados.reduce((sum, p) => sum + (p.valor || 0), 0);
+  const totalDuracao = servicosSelecionados.reduce((sum, s) => sum + (s.duracao || 0), 0) + pacotesSelecionados.reduce((sum, p) => sum + (p.duracao_total || 0), 0);
   const profissionalSelecionado = profissionais.find(p => p.id === profissionalId);
+  const todosItensSelecionados = [...servicosSelecionados.map(s => s.nome), ...pacotesSelecionados.map(p => p.nome)];
 
   // Debug para ver o estado
   console.log('📊 Estado do resumo:', {
+    servicosSelecionados,
+    pacotesSelecionados,
+    totalPreco,
+    totalDuracao,
     profissionalId,
-    profissionais: profissionais.map(p => ({ id: p.id, nome_completo: p.nome_completo })),
     profissionalSelecionado,
   });
 
@@ -270,7 +276,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
       {/* Progress Bar - Sticky no mobile */}
       <div className="sticky top-0 md:relative z-30 px-5 py-3 sm:px-8 sm:py-4 bg-white border-b shadow-md md:shadow-none">
         {/* Resumo visual - só mobile e a partir da etapa 2 */}
-        {currentStepNumber >= 2 && servicosSelecionados.length > 0 && (
+        {currentStepNumber >= 2 && todosItensSelecionados.length > 0 && (
           <div className="md:hidden mb-3 pb-3 border-b border-gray-200 space-y-1.5 text-sm">
             {/* Data e Horário */}
             {data && (
@@ -299,12 +305,24 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
               </div>
             )}
 
-            {/* Serviços */}
-            <div className="flex items-start gap-2">
-              <span className="text-lg">💇</span>
-              <p className="text-gray-900 flex-1">
-                {servicosSelecionados.map(s => s.nome).join(' + ')}
-              </p>
+            {/* Serviços/Pacotes */}
+            <div className="space-y-1">
+              {servicosSelecionados.map((servico) => (
+                <div key={servico.id} className="flex items-center gap-2 text-gray-900">
+                  <span className="flex-shrink-0 text-blue-600">
+                    {getServicoIcon(servico.nome)}
+                  </span>
+                  <span>{servico.nome}</span>
+                </div>
+              ))}
+              {pacotesSelecionados.map((pacote) => (
+                <div key={pacote.id} className="flex items-center gap-2 text-gray-900">
+                  <span className="flex-shrink-0 text-blue-600">
+                    {getServicoIcon(pacote.nome)}
+                  </span>
+                  <span>{pacote.nome}</span>
+                </div>
+              ))}
             </div>
 
             {/* Profissional - sempre mostra a partir da etapa 2 */}
