@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import type { Servico, Pacote } from '@/lib/types';
 import { SkeletonList } from './SkeletonLoader';
+import { getServicoIcon, formatDuracao } from './ServicoIcons';
 
 interface Props {
   servicos: Servico[];
@@ -154,31 +155,45 @@ export default function SelecionarServico({
                     }`}
                   >
                     <div className="flex items-start gap-3">
-                      {/* Checkbox */}
-                      <div className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                        selecionado ? 'bg-blue-600 border-blue-600' : 'border-gray-300'
+                      {/* Ícone do Serviço */}
+                      <div className={`mt-1 p-2 rounded-lg flex-shrink-0 ${
+                        selecionado ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'
                       }`}>
-                        {selecionado && (
-                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        )}
+                        {getServicoIcon(servico.nome)}
                       </div>
 
-                      <div className="flex-1 flex justify-between items-start">
-                        <div>
-                          <h4 className="font-semibold text-base sm:text-lg text-gray-900">{servico.nome}</h4>
-                          {servico.descricao && (
-                            <p className="text-sm text-gray-600 mt-1">{servico.descricao}</p>
-                          )}
-                          <p className="text-sm text-gray-500 mt-2">
-                            ⏱️ {servico.duracao} min
-                          </p>
-                        </div>
-                        <div className="text-right ml-4">
-                          <p className="font-bold text-lg text-blue-600">
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-semibold text-base sm:text-lg text-gray-900">
+                            {servico.nome}
+                          </h4>
+                          <p className="font-bold text-lg text-blue-600 ml-4">
                             R$ {servico.preco.toFixed(2)}
                           </p>
+                        </div>
+                        
+                        {servico.descricao && (
+                          <p className="text-sm text-gray-600 mb-2">{servico.descricao}</p>
+                        )}
+                        
+                        <div className="flex items-center gap-4">
+                          {/* Duração */}
+                          <div className="flex items-center gap-1.5 text-gray-600">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="text-sm font-medium">{formatDuracao(servico.duracao)}</span>
+                          </div>
+                          
+                          {/* Badge de selecionado */}
+                          {selecionado && (
+                            <div className="flex items-center gap-1 text-blue-600">
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              <span className="text-xs font-semibold">Selecionado</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -231,39 +246,54 @@ export default function SelecionarServico({
                     }`}
                   >
                     <div className="flex items-start gap-3">
-                      {/* Checkbox */}
-                      <div className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                        selecionado ? 'bg-purple-600 border-purple-600' : 'border-gray-300'
+                      {/* Ícone do Pacote */}
+                      <div className={`mt-1 p-2 rounded-lg flex-shrink-0 ${
+                        selecionado ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-600'
                       }`}>
-                        {selecionado && (
-                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        )}
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
                       </div>
 
-                      <div className="flex-1 flex justify-between items-start">
-                        <div>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-2">
                           <div className="flex items-center gap-2">
                             <h4 className="font-semibold text-base sm:text-lg text-gray-900">{pacote.nome}</h4>
                             <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold rounded">
                               PACOTE
                             </span>
                           </div>
-                          {pacote.descricao && (
-                            <p className="text-sm text-gray-600 mt-1">{pacote.descricao}</p>
-                          )}
-                          <p className="text-sm text-gray-500 mt-2">
-                            ⏱️ {pacote.duracao_total || 0} min
-                            {!pacote.duracao_total && (
-                              <span className="ml-2 text-xs text-orange-600">(⚠️ duração não definida)</span>
-                            )}
-                          </p>
-                        </div>
-                        <div className="text-right ml-4">
-                          <p className="font-bold text-lg text-purple-600">
+                          <p className="font-bold text-lg text-purple-600 ml-4">
                             R$ {pacote.valor.toFixed(2)}
                           </p>
+                        </div>
+                        
+                        {pacote.descricao && (
+                          <p className="text-sm text-gray-600 mb-2">{pacote.descricao}</p>
+                        )}
+                        
+                        <div className="flex items-center gap-4">
+                          {/* Duração */}
+                          <div className="flex items-center gap-1.5 text-gray-600">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="text-sm font-medium">
+                              {pacote.duracao_total ? formatDuracao(pacote.duracao_total) : (
+                                <span className="text-orange-600">Duração não definida</span>
+                              )}
+                            </span>
+                          </div>
+                          
+                          {/* Badge de selecionado */}
+                          {selecionado && (
+                            <div className="flex items-center gap-1 text-purple-600">
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              <span className="text-xs font-semibold">Selecionado</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
