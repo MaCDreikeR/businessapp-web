@@ -256,11 +256,19 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
 
   return (
     <>
-      {/* Layout de 2 colunas no desktop */}
-      <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
-        {/* Coluna principal - Formulário */}
-        <div className="md:col-span-2">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+      {/* Resumo Desktop - lateral direita */}
+      <div className="hidden xl:block fixed right-8 top-24 w-[300px]">
+        <BookingSummaryDesktop
+          servicos={[...servicosSelecionados, ...pacotesSelecionados]}
+          profissional={profissionalSelecionado || null}
+          data={data}
+          horario={horario}
+          currentStep={currentStepNumber}
+        />
+      </div>
+
+      {/* Formulário principal */}
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             {/* Header com Glassmorphism */}
             <div className="glass-effect px-5 py-4 sm:px-8 sm:py-6 text-white relative">
               <div className="flex items-center gap-4">
@@ -278,11 +286,11 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
               </div>
             </div>
 
-      {/* Progress Bar - Sticky no mobile */}
-      <div className="sticky top-0 md:relative z-30 px-5 py-3 sm:px-8 sm:py-4 bg-white border-b shadow-md md:shadow-none">
-        {/* Resumo visual - só mobile e a partir da etapa 2 */}
-        {currentStepNumber >= 2 && todosItensSelecionados.length > 0 && (
-          <div className="md:hidden mb-3 pb-3 border-b border-gray-200 space-y-1.5 text-sm">
+            {/* Progress Bar - Sticky no mobile */}
+            <div className="sticky top-0 md:relative z-30 px-5 py-3 sm:px-8 sm:py-4 bg-white border-b shadow-md md:shadow-none">
+              {/* Resumo visual - só mobile e a partir da etapa 2 */}
+              {currentStepNumber >= 2 && todosItensSelecionados.length > 0 && (
+                <div className="md:hidden mb-2 pb-2 border-b border-gray-200 space-y-1 text-sm">
             {/* Data e Horário */}
             {data && (
               <div className="flex items-start gap-2">
@@ -348,7 +356,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
           </div>
         )}
         
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-1">
           <span className="text-sm font-medium text-gray-600">
             Etapa {currentStepNumber} de 5
           </span>
@@ -366,15 +374,13 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         </div>
       </div>
 
-      {/* Layout com 2 colunas no desktop */}
-      <div className="md:grid md:grid-cols-3 md:gap-8 p-5 sm:p-8">
-        {/* Coluna principal - Formulário */}
-        <div className="md:col-span-2">
-          {error && (
-            <div className="mb-5 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-base">
-              {error}
-            </div>
-          )}
+      {/* Form Content */}
+      <div className="p-5 sm:p-8">
+        {error && (
+          <div className="mb-5 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-base">
+            {error}
+          </div>
+        )}
 
         {step === 'servico' && (
           <SelecionarServico
@@ -443,18 +449,6 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         )}
       </div>
     </div>
-
-    {/* Coluna lateral - Resumo Desktop */}
-    <div className="md:col-span-1">
-      <BookingSummaryDesktop
-        servicos={[...servicosSelecionados, ...pacotesSelecionados] as any}
-        profissional={profissionalSelecionado || null}
-        data={data}
-        horario={horario}
-        currentStep={currentStepNumber}
-      />
-    </div>
-  </div>
-    </>
+</>
   );
 }
