@@ -85,9 +85,9 @@ export default function SelecionarData({
           onClick={() => disponivel && onChange(dataStr)}
           className={`aspect-square p-2 sm:p-3 rounded-lg text-base sm:text-lg font-semibold transition-all ${
             selecionado
-              ? 'bg-blue-600 text-white ring-2 ring-blue-600 ring-offset-2 shadow-lg'
+              ? 'bg-[#7C3AED] text-white ring-2 ring-[#7C3AED] ring-offset-2 shadow-lg'
               : disponivel
-              ? 'bg-white hover:bg-blue-50 text-gray-900 border-2 border-gray-300 hover:border-blue-400 hover:shadow-md'
+              ? 'bg-white hover:bg-purple-50 text-gray-900 border-2 border-gray-300 hover:border-[#7C3AED] hover:shadow-md'
               : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
           }`}
         >
@@ -178,7 +178,7 @@ export default function SelecionarData({
         </div>
 
         {data && (
-          <div className="bg-blue-50 rounded-lg p-4 text-center">
+          <div className="bg-purple-50 rounded-lg p-4 text-center">
             <p className="text-base sm:text-lg text-blue-900 font-medium">
               {new Date(data + 'T00:00:00').toLocaleDateString('pt-BR', {
                 weekday: 'long',
@@ -239,7 +239,7 @@ export default function SelecionarData({
         <button
           onClick={() => setShowBottomSheet(false)}
           disabled={!data}
-          className="w-full py-4 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-4 rounded-xl font-semibold bg-[#7C3AED] text-white hover:bg-[#6D28D9] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           Confirmar
         </button>
@@ -256,7 +256,7 @@ export default function SelecionarData({
         <button
           onClick={onNext}
           disabled={!data}
-          className="w-full py-4 px-6 rounded-lg text-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-4 px-6 rounded-lg text-lg font-semibold bg-[#7C3AED] text-white hover:bg-[#6D28D9] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           Continuar
         </button>

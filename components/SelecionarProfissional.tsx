@@ -39,7 +39,7 @@ export default function SelecionarProfissional({
                 onClick={() => onChange(prof.id)}
                 className={`p-4 rounded-lg border-2 transition-all text-left hover-lift animate-fade-in-up ${delayClass} ${
                   profissionalId === prof.id
-                    ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-600 ring-offset-2'
+                    ? 'border-[#7C3AED] bg-purple-50 ring-2 ring-[#7C3AED] ring-offset-2'
                     : 'border-gray-300 hover:border-blue-400 bg-white'
                 }`}
               >
@@ -61,10 +61,10 @@ export default function SelecionarProfissional({
                   </h4>
                   {profissionalId === prof.id && (
                     <div className="inline-flex items-center mt-1">
-                      <div className="w-5 h-5 border-2 border-green-500 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-3 border-r-2 border-b-2 border-green-500 transform rotate-45 animate-checkmark" />
+                      <div className="w-5 h-5 border-2 border-[#7C3AED] rounded-full flex items-center justify-center">
+                        <div className="w-2 h-3 border-r-2 border-b-2 border-[#7C3AED] transform rotate-45 animate-checkmark" />
                       </div>
-                      <span className="ml-2 text-sm text-green-600 font-medium">Selecionado</span>
+                      <span className="ml-2 text-sm text-[#7C3AED] font-medium">Selecionado</span>
                     </div>
                   )}
                 </div>
@@ -82,7 +82,7 @@ export default function SelecionarProfissional({
       )}
 
       {profissionalId && (
-        <div className="bg-blue-50 rounded-lg p-4 text-center">
+        <div className="bg-purple-50 rounded-lg p-4 text-center">
           <p className="text-base sm:text-lg text-blue-900 font-medium">
             Profissional selecionado
           </p>
@@ -99,7 +99,7 @@ export default function SelecionarProfissional({
         <button
           onClick={onNext}
           disabled={!profissionalId}
-          className="flex-1 py-4 px-6 rounded-lg text-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 py-4 px-6 rounded-lg text-lg font-semibold bg-[#7C3AED] text-white hover:bg-[#6D28D9] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           Continuar
         </button>

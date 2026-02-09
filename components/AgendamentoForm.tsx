@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { colors } from '@/lib/theme';
 import type {
   Estabelecimento,
   AgendamentoOnlineConfig,
@@ -190,7 +191,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{ borderColor: colors.primary }}></div>
       </div>
     );
   }
@@ -214,7 +215,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         <p className="text-gray-600 mb-6">
           Você receberá uma confirmação no WhatsApp em breve.
         </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left space-y-2 mb-6">
+        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-left space-y-2 mb-6">
           <p className="text-sm text-gray-700">
             <strong>Estabelecimento:</strong> {estabelecimento.nome}
           </p>
@@ -227,7 +228,10 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         </div>
         <button
           onClick={() => window.location.reload()}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+          className="text-white font-medium py-3 px-6 rounded-lg transition-colors"
+          style={{ backgroundColor: colors.primary }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primaryDark}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary}
         >
           Fazer Novo Agendamento
         </button>
@@ -281,7 +285,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
                 )}
                 <div>
                   <h1 className="text-3xl sm:text-4xl font-bold drop-shadow-md">{estabelecimento.nome}</h1>
-                  <p className="text-xl text-blue-100">Agendamento online</p>
+                  <p className="text-xl text-purple-100">Agendamento online</p>
                 </div>
               </div>
             </div>
@@ -293,13 +297,14 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
           <span className="text-sm font-medium text-gray-600">
             Etapa {currentStepNumber} de 5
           </span>
-          <span className="text-sm font-medium text-blue-600">
+          <span className="text-sm font-medium" style={{ color: colors.primary }}>
             {currentStepNumber * 20}%
           </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
           <div 
-            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 transition-all duration-500 ease-out rounded-full"
+            className="h-2 transition-all duration-500 ease-out rounded-full"
+            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.primaryDark})` }}
             style={{ 
               width: `${currentStepNumber * 20}%` 
             }}

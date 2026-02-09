@@ -64,7 +64,7 @@ export default function DadosCliente({
             value={nome}
             onChange={(e) => onChangeNome(e.target.value)}
             placeholder="Seu nome completo"
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-gray-900"
+            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0a7ea4] focus:border-transparent text-lg text-gray-900"
           />
         </div>
 
@@ -78,7 +78,7 @@ export default function DadosCliente({
             value={telefone}
             onChange={handleTelefoneChange}
             placeholder="(00) 00000-0000"
-            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg text-gray-900"
+            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0a7ea4] focus:border-transparent text-lg text-gray-900"
             maxLength={15}
           />
           <p className="text-xs text-gray-500 mt-2">
@@ -97,7 +97,7 @@ export default function DadosCliente({
               onChange={(e) => onChangeObservacao(e.target.value)}
               placeholder="Alguma observação sobre seu agendamento?"
               rows={4}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0a7ea4] focus:border-transparent resize-none text-gray-900"
               maxLength={500}
             />
             <p className="text-xs text-gray-500 mt-2">
@@ -107,7 +107,7 @@ export default function DadosCliente({
         )}
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
         <div className="flex items-start gap-3">
           <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

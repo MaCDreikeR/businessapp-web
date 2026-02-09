@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { colors } from '@/lib/theme';
 import type { Servico, Pacote } from '@/lib/types';
 import { SkeletonList } from './SkeletonLoader';
 import { getServicoIcon, formatDuracao } from './ServicoIcons';
@@ -97,9 +98,10 @@ export default function SelecionarServico({
           onClick={() => setActiveTab('servicos')}
           className={`flex-1 py-3 px-4 text-base font-semibold transition-all ${
             activeTab === 'servicos'
-              ? 'text-blue-600 border-b-2 border-blue-600'
+              ? 'border-b-2'
               : 'text-gray-600 hover:text-gray-900'
           }`}
+          style={activeTab === 'servicos' ? { color: colors.primary, borderColor: colors.primary } : undefined}
         >
           Serviços ({servicos.length})
         </button>
@@ -107,9 +109,10 @@ export default function SelecionarServico({
           onClick={() => setActiveTab('pacotes')}
           className={`flex-1 py-3 px-4 text-base font-semibold transition-all ${
             activeTab === 'pacotes'
-              ? 'text-purple-600 border-b-2 border-purple-600'
+              ? 'border-b-2'
               : 'text-gray-600 hover:text-gray-900'
           }`}
+          style={activeTab === 'pacotes' ? { color: colors.primary, borderColor: colors.primary } : undefined}
         >
           Pacotes ({pacotes.length})
         </button>
@@ -151,14 +154,14 @@ export default function SelecionarServico({
                     onClick={() => toggleServico(servico.id)}
                     className={`w-full text-left p-5 rounded-xl transition-all duration-200 hover-lift animate-fade-in-up ${delayClass} ${
                       selecionado
-                        ? 'bg-blue-50 border-l-4 border-blue-600 shadow-sm'
+                        ? 'bg-purple-50 border-l-4 border-[#7C3AED] shadow-sm'
                         : 'bg-white hover:bg-gray-50 border-l-4 border-transparent hover:border-gray-300 shadow-sm'
                     }`}
                   >
                     <div className="flex items-start gap-4">
                       {/* Ícone do Serviço */}
                       <div className={`p-2.5 rounded-lg transition-colors ${
-                        selecionado ? 'bg-blue-100 text-blue-600' : 'bg-gray-50 text-gray-500'
+                        selecionado ? 'bg-purple-100 text-[#7C3AED]' : 'bg-gray-50 text-gray-500'
                       }`}>
                         {getServicoIcon(servico.nome)}
                       </div>
@@ -169,7 +172,7 @@ export default function SelecionarServico({
                             {servico.nome}
                           </h4>
                           <p className={`font-semibold text-base whitespace-nowrap ${
-                            selecionado ? 'text-blue-600' : 'text-gray-900'
+                            selecionado ? 'text-[#10B981]' : 'text-[#10B981]'
                           }`}>
                             R$ {servico.preco.toFixed(2)}
                           </p>
@@ -190,10 +193,10 @@ export default function SelecionarServico({
                           {selecionado && (
                             <>
                               <span className="mx-1.5 text-gray-300">•</span>
-                              <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-[#7C3AED]" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs text-blue-600 font-medium">Selecionado</span>
+                              <span className="text-xs text-[#7C3AED] font-medium">Selecionado</span>
                             </>
                           )}
                         </div>
@@ -267,7 +270,7 @@ export default function SelecionarServico({
                             </span>
                           </div>
                           <p className={`font-semibold text-base whitespace-nowrap ${
-                            selecionado ? 'text-purple-600' : 'text-gray-900'
+                            selecionado ? 'text-[#10B981]' : 'text-[#10B981]'
                           }`}>
                             R$ {pacote.valor.toFixed(2)}
                           </p>
@@ -292,10 +295,10 @@ export default function SelecionarServico({
                           {selecionado && (
                             <>
                               <span className="mx-1.5 text-gray-300">•</span>
-                              <svg className="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-[#7C3AED]" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs text-purple-600 font-medium">Selecionado</span>
+                              <span className="text-xs text-[#7C3AED] font-medium">Selecionado</span>
                             </>
                           )}
                         </div>
@@ -321,7 +324,7 @@ export default function SelecionarServico({
             {servicosSelecionados.map(s => (
               <div key={s.id} className="flex justify-between items-center text-sm">
                 <span className="text-gray-700">• {s.nome}</span>
-                <span className="font-medium text-gray-900">R$ {s.preco.toFixed(2)}</span>
+                <span className="font-medium text-[#10B981]">R$ {s.preco.toFixed(2)}</span>
               </div>
             ))}
             {pacotesSelecionados.map(p => (
@@ -332,7 +335,7 @@ export default function SelecionarServico({
                     Pacote
                   </span>
                 </span>
-                <span className="font-medium text-gray-900">R$ {p.valor.toFixed(2)}</span>
+                <span className="font-medium text-[#10B981]">R$ {p.valor.toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -341,7 +344,7 @@ export default function SelecionarServico({
               <div className="text-sm text-gray-600">
                 Total: <span className="font-medium text-gray-900">{duracaoTotal} min</span>
               </div>
-              <div className="text-lg font-bold text-blue-600">
+              <div className="text-lg font-bold text-[#10B981]">
                 R$ {valorTotal.toFixed(2)}
               </div>
             </div>
@@ -362,7 +365,10 @@ export default function SelecionarServico({
         <button
           onClick={onNext}
           disabled={!temSelecao}
-          className="flex-1 py-4 px-6 rounded-lg text-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 py-4 px-6 rounded-lg text-lg font-semibold text-white disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          style={{ backgroundColor: colors.primary }}
+          onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.backgroundColor = colors.primaryDark)}
+          onMouseLeave={(e) => !e.currentTarget.disabled && (e.currentTarget.style.backgroundColor = colors.primary)}
         >
           Continuar
         </button>
