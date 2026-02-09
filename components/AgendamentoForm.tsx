@@ -458,6 +458,3 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
     </>
   );
 }
-    </>
-  );
-}
