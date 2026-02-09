@@ -235,6 +235,7 @@ export default function SelecionarData({
         isOpen={showBottomSheet}
         onClose={() => setShowBottomSheet(false)}
         title="Selecionar Data"
+        centered={true}
       >
         {/* Navegação do mês */}
         <div className="flex items-center justify-between py-1.5 mb-2">
