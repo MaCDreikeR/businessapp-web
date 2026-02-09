@@ -103,7 +103,7 @@ export default function SelecionarServico({
           }`}
           style={activeTab === 'servicos' ? { color: colors.primary, borderColor: colors.primary } : undefined}
         >
-          Serviços ({servicos.length})
+          Serviços
         </button>
         <button
           onClick={() => setActiveTab('pacotes')}
@@ -114,7 +114,7 @@ export default function SelecionarServico({
           }`}
           style={activeTab === 'pacotes' ? { color: colors.primary, borderColor: colors.primary } : undefined}
         >
-          Pacotes ({pacotes.length})
+          Pacotes
         </button>
       </div>
 
@@ -141,7 +141,7 @@ export default function SelecionarServico({
           </div>
 
           {/* Lista de Serviços */}
-          <div className="space-y-3 max-h-96 overflow-y-auto">
+          <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-hide">
             {loading ? (
               <SkeletonList count={4} type="servico" />
             ) : servicosFiltrados.length > 0 ? (
@@ -194,7 +194,6 @@ export default function SelecionarServico({
                               <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs text-primary font-medium">Selecionado</span>
                             </>
                           )}
                         </div>
@@ -234,7 +233,7 @@ export default function SelecionarServico({
           </div>
 
           {/* Lista de Pacotes */}
-          <div className="space-y-3 max-h-96 overflow-y-auto">
+          <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-hide">
             {pacotesFiltrados.length > 0 ? (
               pacotesFiltrados.map((pacote, index) => {
                 const selecionado = pacotesIds.includes(pacote.id);
@@ -261,12 +260,7 @@ export default function SelecionarServico({
 
                       <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start gap-4 mb-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-base text-gray-900 truncate">{pacote.nome}</h4>
-                            <span className="px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded uppercase tracking-wide">
-                              Pacote
-                            </span>
-                          </div>
+                          <h4 className="font-semibold text-base text-gray-900 truncate">{pacote.nome}</h4>
                           <p className="font-semibold text-base whitespace-nowrap text-secondary">
                             R$ {pacote.valor.toFixed(2)}
                           </p>
@@ -294,7 +288,6 @@ export default function SelecionarServico({
                               <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
-                              <span className="text-xs text-primary font-medium">Selecionado</span>
                             </>
                           )}
                         </div>
@@ -325,20 +318,15 @@ export default function SelecionarServico({
             ))}
             {pacotesSelecionados.map(p => (
               <div key={p.id} className="flex justify-between items-center text-sm">
-                <span className="text-gray-700">
-                  • {p.nome} 
-                  <span className="ml-1.5 px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded uppercase">
-                    Pacote
-                  </span>
-                </span>
+                <span className="text-gray-700">• {p.nome}</span>
                 <span className="font-medium text-secondary">R$ {p.valor.toFixed(2)}</span>
               </div>
             ))}
           </div>
           <div className="mt-4 pt-4 border-t border-blue-200">
             <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-600">
-                Total: <span className="font-medium text-gray-900">{duracaoTotal} min</span>
+              <div className="text-base text-gray-700 font-medium">
+                Total: {Math.floor(duracaoTotal / 60)}h {duracaoTotal % 60}min
               </div>
               <div className="text-lg font-bold text-secondary">
                 R$ {valorTotal.toFixed(2)}

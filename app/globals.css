@@ -155,6 +155,15 @@ body {
 .hover\:bg-primary-dark:hover { background-color: var(--color-primary-dark) !important; }
 .hover\:border-primary:hover { border-color: var(--color-primary) !important; }
 
+/* Ocultar scrollbar mantendo funcionalidade */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
 /* Shimmer skeleton */
 .skeleton-shimmer {
   background: linear-gradient(
