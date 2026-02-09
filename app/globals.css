@@ -144,16 +144,16 @@ body {
 }
 
 /* Utility classes para cores do BusinessApp */
-.text-primary { color: var(--color-primary); }
-.text-secondary { color: var(--color-secondary); }
-.bg-primary { background-color: var(--color-primary); }
-.bg-primary-dark { background-color: var(--color-primary-dark); }
-.bg-secondary { background-color: var(--color-secondary); }
-.border-primary { border-color: var(--color-primary); }
+.text-primary { color: var(--color-primary) !important; }
+.text-secondary { color: var(--color-secondary) !important; }
+.bg-primary { background-color: var(--color-primary) !important; }
+.bg-primary-dark { background-color: var(--color-primary-dark) !important; }
+.bg-secondary { background-color: var(--color-secondary) !important; }
+.border-primary { border-color: var(--color-primary) !important; }
 .ring-primary { --tw-ring-color: var(--color-primary); }
 
-.hover\:bg-primary-dark:hover { background-color: var(--color-primary-dark); }
-.hover\:border-primary:hover { border-color: var(--color-primary); }
+.hover\:bg-primary-dark:hover { background-color: var(--color-primary-dark) !important; }
+.hover\:border-primary:hover { border-color: var(--color-primary) !important; }
 
 /* Shimmer skeleton */
 .skeleton-shimmer {
