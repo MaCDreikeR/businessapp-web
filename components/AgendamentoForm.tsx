@@ -44,6 +44,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
   const [nome, setNome] = useState<string>('');
   const [telefone, setTelefone] = useState<string>('');
   const [observacao, setObservacao] = useState<string>('');
+  const [honeypot, setHoneypot] = useState<string>(''); // Campo anti-spam
 
   // Dados carregados
   const [servicos, setServicos] = useState<Servico[]>([]);
@@ -154,6 +155,11 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
     setError('');
 
     try {
+      // Verificar honeypot (anti-spam)
+      if (honeypot) {
+        throw new Error('Requisição inválida');
+      }
+
       const payload: CriarAgendamentoOnlineDTO = {
         slug: estabelecimento.slug,
         data,
@@ -164,6 +170,7 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
         nome,
         telefone,
         observacao: observacao || undefined,
+        honeypot: honeypot || undefined, // Enviar para backend validar
       };
 
       const response = await fetch('/api/criar-agendamento', {
@@ -383,6 +390,8 @@ export default function AgendamentoForm({ estabelecimento, config, horarioAbertu
             onSubmit={handleSubmit}
             onBack={() => setStep('horario')}
             submitting={submitting}
+            honeypot={honeypot}
+            onChangeHoneypot={setHoneypot}
           />
         )}
       </div>

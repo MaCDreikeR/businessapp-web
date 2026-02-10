@@ -6,7 +6,18 @@ export interface Estabelecimento {
   slug: string;
   logo_url?: string;
   telefone?: string;
+  whatsapp?: string;
   endereco?: string;
+  bairro?: string;
+  complemento?: string;
+  cidade?: string;
+  estado?: string;
+  cep?: string;
+  descricao?: string;
+  faixa_preco?: '$' | '$$' | '$$$' | '$$$$';
+  instagram?: string;
+  facebook?: string;
+  site?: string;
   status: 'ativa' | 'inativa';
   created_at: string;
   updated_at: string;
@@ -113,6 +124,7 @@ export interface CriarAgendamentoOnlineDTO {
   nome: string;
   telefone: string;
   observacao?: string;
+  honeypot?: string; // Campo anti-spam
 }
 
 export interface HorarioDisponivel {

@@ -2,11 +2,94 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import type { CriarAgendamentoOnlineDTO } from '@/lib/types';
 
+// Rate limiting simples em memória (para produção, usar Redis ou similar)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minuto
+const MAX_REQUESTS = 3; // 3 requests por minuto
+
+function getRateLimitKey(request: Request): string {
+  // Usar IP real se estiver atrás de proxy
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : 'unknown';
+  return `rate_limit:${ip}`;
+}
+
+function checkRateLimit(key: string): boolean {
+  const now = Date.now();
+  const record = rateLimitStore.get(key);
+
+  if (!record || now > record.resetTime) {
+    // Novo período ou expirado
+    rateLimitStore.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (record.count >= MAX_REQUESTS) {
+    return false; // Limite excedido
+  }
+
+  record.count++;
+  return true;
+}
+
+function validarTelefoneBrasileiro(telefone: string): boolean {
+  // Remove todos os caracteres não numéricos
+  const numeros = telefone.replace(/\D/g, '');
+  
+  // Aceita:
+  // - 10 dígitos: (XX) XXXX-XXXX (fixo)
+  // - 11 dígitos: (XX) 9XXXX-XXXX (celular)
+  // - 12 dígitos: 55 XX XXXX-XXXX
+  // - 13 dígitos: 55 XX 9XXXX-XXXX
+  if (numeros.length < 10 || numeros.length > 13) {
+    return false;
+  }
+
+  // Se tem 13 dígitos, deve começar com 55 (código do Brasil)
+  if (numeros.length === 13 && !numeros.startsWith('55')) {
+    return false;
+  }
+
+  // Se tem 12 dígitos, deve começar com 55 (código do Brasil)
+  if (numeros.length === 12 && !numeros.startsWith('55')) {
+    return false;
+  }
+
+  return true;
+}
+
 export async function POST(request: Request) {
   try {
     const body: CriarAgendamentoOnlineDTO = await request.json();
     
     console.log('📝 Dados recebidos:', JSON.stringify(body, null, 2));
+
+    // 1. VALIDAÇÃO HONEYPOT (campo invisível que bots preenchem)
+    if (body.honeypot && body.honeypot.trim() !== '') {
+      console.warn('⚠️ Honeypot detectado:', body.honeypot);
+      return NextResponse.json(
+        { error: 'Requisição inválida' },
+        { status: 400 }
+      );
+    }
+
+    // 2. RATE LIMITING (prevenir spam)
+    const rateLimitKey = getRateLimitKey(request);
+    if (!checkRateLimit(rateLimitKey)) {
+      console.warn('⚠️ Rate limit excedido:', rateLimitKey);
+      return NextResponse.json(
+        { error: 'Muitas requisições. Aguarde um momento e tente novamente.' },
+        { status: 429 }
+      );
+    }
+
+    // 3. VALIDAÇÃO DE TELEFONE BRASILEIRO
+    if (!validarTelefoneBrasileiro(body.telefone)) {
+      return NextResponse.json(
+        { error: 'Telefone inválido. Use um número brasileiro válido.' },
+        { status: 400 }
+      );
+    }
 
     // Validar campos obrigatórios
     if (!body.slug || !body.data || !body.hora || !body.profissional_id || !body.telefone || !body.nome) {

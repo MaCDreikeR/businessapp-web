@@ -194,6 +194,10 @@ export default function SelecionarHorario({
     );
   }
 
+  const totalVagas = horarios.length;
+  const isHoje = new Date(data + 'T00:00:00').toDateString() === new Date().toDateString();
+  const mostrarUrgencia = isHoje && totalVagas > 0 && totalVagas <= 4;
+
   return (
     <div className="space-y-5 animate-fade-in">
       <div>
@@ -205,6 +209,24 @@ export default function SelecionarHorario({
           </p>
         </div>
       </div>
+
+      {/* Banner de Urgência - Últimas vagas para hoje */}
+      {mostrarUrgencia && (
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-xl p-4 shadow-lg animate-pulse">
+          <div className="flex items-center gap-3 text-white">
+            <span className="text-3xl">⏰</span>
+            <div className="flex-1">
+              <p className="text-lg font-bold">Últimas vagas para hoje!</p>
+              <p className="text-sm opacity-90">
+                Apenas {totalVagas} {totalVagas === 1 ? 'horário disponível' : 'horários disponíveis'} restantes
+              </p>
+            </div>
+            <div className="hidden sm:flex items-center justify-center bg-white/20 rounded-full w-12 h-12 backdrop-blur-sm">
+              <span className="text-2xl font-bold">{totalVagas}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Grid no desktop, Lista no mobile */}
       <div className="flex flex-col md:grid md:grid-cols-4 lg:grid-cols-5 gap-2">

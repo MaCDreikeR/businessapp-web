@@ -11,6 +11,8 @@ interface Props {
   onSubmit: () => void;
   onBack: () => void;
   submitting: boolean;
+  honeypot?: string;
+  onChangeHoneypot?: (value: string) => void;
 }
 
 export default function DadosCliente({
@@ -24,13 +26,20 @@ export default function DadosCliente({
   onSubmit,
   onBack,
   submitting,
+  honeypot = '',
+  onChangeHoneypot,
 }: Props) {
   function formatarTelefone(value: string) {
     const numeros = value.replace(/\D/g, '');
-    if (numeros.length <= 10) {
-      return numeros.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    // Adicionar +55 automaticamente se não tiver
+    if (numeros.length <= 11 && !numeros.startsWith('55')) {
+      if (numeros.length <= 10) {
+        return numeros.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+      }
+      return numeros.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
     }
-    return numeros.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+    // Com código do país
+    return numeros.replace(/(\d{2})(\d{2})(\d{5})(\d{0,4})/, '+$1 ($2) $3-$4');
   }
 
   function handleTelefoneChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,7 +47,9 @@ export default function DadosCliente({
     onChangeTelefone(formatted);
   }
 
-  const telefoneValido = telefone.replace(/\D/g, '').length >= 10;
+  // Validar telefone brasileiro (10 ou 11 dígitos)
+  const numerosLimpos = telefone.replace(/\D/g, '');
+  const telefoneValido = numerosLimpos.length >= 10 && numerosLimpos.length <= 13;
   const nomeValido = nome.trim().length >= 3;
   const formularioValido = nomeValido && telefoneValido;
 
@@ -54,6 +65,24 @@ export default function DadosCliente({
       </div>
 
       <div className="space-y-4">
+        {/* Honeypot - campo anti-spam invisível */}
+        <input
+          type="text"
+          name="website"
+          value={honeypot}
+          onChange={(e) => onChangeHoneypot?.(e.target.value)}
+          style={{
+            position: 'absolute',
+            left: '-9999px',
+            width: '1px',
+            height: '1px',
+            opacity: 0,
+          }}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+        />
+
         <div>
           <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">
             Nome Completo *
